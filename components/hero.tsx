@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HeroCanvas } from "./hero-canvas";
 
-const ROTATING = ["artificial intelligence", "the frontier", "what comes next", "the people building it"];
+const ROTATING = ["artificial intelligence", "the frontier", "what comes next", "the future"];
 
 export function Hero({
   companies,
@@ -66,7 +66,8 @@ export function Hero({
           Harvard Business School · at the AI frontier
         </div>
 
-        <h1 className="mt-6 font-display text-[13vw] leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
+        {/* min-height reserves 3 lines so the rotating word never resizes the hero */}
+        <h1 className="mt-6 min-h-[3em] font-display text-[13vw] leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
           <span className="rise" style={{ animationDelay: "0.15s" }}>
             <span style={{ animationDelay: "0.15s" }}>Where business</span>
           </span>

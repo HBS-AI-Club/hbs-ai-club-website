@@ -58,9 +58,9 @@ export function Nav() {
                 href={l.href}
                 className={`text-sm transition-colors ${
                   onDark
-                    ? active
-                      ? "text-white"
-                      : "text-paper/70 hover:text-white"
+                    ? `[text-shadow:0_1px_12px_rgba(0,0,0,0.5)] ${
+                        active ? "text-white" : "text-paper/90 hover:text-white"
+                      }`
                     : active
                       ? "text-crimson"
                       : "text-ink-soft hover:text-ink"
