@@ -1,7 +1,7 @@
 import { getLeadership } from "@/lib/notion";
 import { LeaderCard } from "@/components/leader-card";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export const metadata = {
   title: "Leadership",

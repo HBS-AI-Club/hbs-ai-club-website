@@ -5,7 +5,7 @@ import { slugify } from "./format";
 
 const TOKEN = process.env.NOTION_TOKEN;
 const NOTION_VERSION = "2022-06-28";
-const REVALIDATE = 300; // seconds; page-level ISR also set per route
+const REVALIDATE = 60; // seconds; page-level ISR also set per route
 
 export const DB = {
   events: "399d8dc3-9a12-813e-a0dc-c0227d025104",

@@ -1,7 +1,7 @@
 import { getEvents } from "@/lib/notion";
 import { EventsView } from "@/components/events-view";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export const metadata = {
   title: "Events",

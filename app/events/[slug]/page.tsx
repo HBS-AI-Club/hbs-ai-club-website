@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getEvents, getEventBySlug, getSpeakers } from "@/lib/notion";
 import { CATEGORY_META, fmtDate } from "@/lib/format";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const events = await getEvents();

@@ -9,7 +9,7 @@ import {
 import { Avatar } from "@/components/avatar";
 import { CATEGORY_META, fmtDate } from "@/lib/format";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const speakers = await getSpeakers();

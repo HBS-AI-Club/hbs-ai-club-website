@@ -4,7 +4,7 @@ import { CATEGORY_META, fmtDate } from "@/lib/format";
 import { Hero } from "@/components/hero";
 import { Reveal } from "@/components/reveal";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export default async function Home() {
   const [events, speakers, leaders] = await Promise.all([

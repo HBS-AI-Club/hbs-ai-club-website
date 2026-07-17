@@ -1,7 +1,7 @@
 import { getSpeakers } from "@/lib/notion";
 import { SpeakerCard } from "@/components/speaker-card";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export const metadata = {
   title: "Speakers",
