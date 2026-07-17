@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HBS AI Club — Website
 
-## Getting Started
+The website for the Harvard Business School AI Club. Built with **Next.js (App Router) + Tailwind CSS**, with all content managed in **Notion** so any board member can update it without touching code.
 
-First, run the development server:
+## How content works
+
+Everything on the site is pulled live from the Notion workspace **"HBS AI Club Wiki" → Public Content**. Each database has a **`Show on Website`** checkbox — a row appears on the site only when that box is checked.
+
+| Section | Notion database |
+| --- | --- |
+| Events (calendar + agenda) | Events |
+| Speakers | Speakers |
+| Leadership | Leadership (has a `Tenure` field: Current / Past board) |
+| Learn | Learning Resources + Podcasts |
+
+Edits in Notion appear on the site within ~5 minutes (incremental static regeneration).
+
+## Running locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with a Notion integration token that can **read** the Public Content page:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NOTION_TOKEN=ntn_xxxxxxxx
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploying (Vercel)
 
-## Learn More
+The site auto-deploys from `main`. The only required environment variable is `NOTION_TOKEN`, set in **Vercel → Project → Settings → Environment Variables**.
 
-To learn more about Next.js, take a look at the following resources:
+> **Security:** use a **read-only** Notion integration token in production (Notion → Settings → Integrations → new internal integration → *Read content* only → connect it to the Public Content page). Never commit the token — `.env*` is gitignored.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/` — routes (home, events, speakers, leadership, learn, join, plus `[slug]` detail pages)
+- `components/` — UI (animated hero + interactive canvas, nav, events calendar/agenda, cards)
+- `lib/notion.ts` — the Notion data layer (database IDs live here)
+- `lib/format.ts` — date/slug/category helpers
