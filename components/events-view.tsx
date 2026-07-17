@@ -90,7 +90,7 @@ export function EventsView({ events }: { events: EventItem[] }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search events, speakers, companies…"
-          className="w-full rounded-full border border-line bg-paper px-4 py-2 text-sm outline-none focus:border-crimson sm:max-w-xs"
+          className="w-full rounded-full border border-line bg-paper px-4 py-2 text-sm focus:border-crimson sm:max-w-xs"
         />
         <div className="flex flex-wrap gap-1.5">
           {(

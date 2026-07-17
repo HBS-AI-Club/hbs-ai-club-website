@@ -1,7 +1,7 @@
 // Notion CMS data layer for the HBS AI Club site.
 // Uses the stable REST API (version 2022-06-28) via fetch — no SDK version surprises.
 
-import { slugify } from "./format";
+import { slugify, displayTitle } from "./format";
 
 const TOKEN = process.env.NOTION_TOKEN;
 const NOTION_VERSION = "2022-06-28";
@@ -173,7 +173,9 @@ export async function getEvents(): Promise<EventItem[]> {
       cover: gFile(p, "Cover Image"),
     };
   });
-  return assignSlugs(items);
+  // Slugs come from the raw title (stable URLs); the visible name drops internal
+  // club tags like "[AI Club] ".
+  return assignSlugs(items).map((e) => ({ ...e, name: displayTitle(e.name) }));
 }
 
 export async function getSpeakers(): Promise<Speaker[]> {

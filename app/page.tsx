@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { getEvents, getSpeakers, getLeadership } from "@/lib/notion";
-import { CATEGORY_META, fmtDate } from "@/lib/format";
+import { CATEGORY_META, cleanCompany, fmtDate } from "@/lib/format";
 import { Hero } from "@/components/hero";
 import { Reveal } from "@/components/reveal";
+import { Avatar } from "@/components/avatar";
 
 export const revalidate = 60;
 
@@ -15,11 +16,11 @@ export default async function Home() {
 
   const dated = events.filter((e) => e.date);
 
-  // distinct company names (for the hero marquee + stat)
+  // distinct, display-cleaned company names (for the hero marquee + stat)
   const companyList: string[] = [];
   const seen = new Set<string>();
   for (const c of [...speakers.map((s) => s.company), ...events.map((e) => e.company)]) {
-    const name = c.trim();
+    const name = cleanCompany(c);
     if (!name) continue;
     const key = name.toLowerCase();
     if (seen.has(key)) continue;
@@ -159,13 +160,22 @@ export default async function Home() {
           <Reveal delay={80}>
             <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((s) => (
-                <div key={s.id} className="bg-paper px-6 py-5">
-                  <div className="font-display text-lg">{s.name}</div>
-                  <div className="text-sm text-muted">
-                    {s.title}
-                    {s.company ? ` · ${s.company}` : ""}
+                <Link
+                  key={s.id}
+                  href={`/speakers/${s.slug}`}
+                  className="group flex items-center gap-4 bg-paper px-6 py-5 transition-colors hover:bg-paper-2"
+                >
+                  <Avatar name={s.name} src={s.headshot} size={44} />
+                  <div className="min-w-0">
+                    <div className="font-display text-lg leading-tight group-hover:text-crimson">
+                      {s.name}
+                    </div>
+                    <div className="truncate text-sm text-muted">
+                      {s.title}
+                      {s.company ? ` · ${s.company}` : ""}
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </Reveal>

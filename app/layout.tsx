@@ -19,12 +19,29 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://hbs-ai-club-website.vercel.app"
+  ),
   title: {
     default: "HBS AI Club",
     template: "%s · HBS AI Club",
   },
   description:
     "The Harvard Business School Artificial Intelligence Club — fireside chats, technical learning, and community at the frontier of AI and business.",
+  openGraph: {
+    title: "HBS AI Club",
+    description:
+      "Where business meets artificial intelligence. Fireside chats, technical learning, and community at Harvard Business School.",
+    siteName: "HBS AI Club",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HBS AI Club",
+    description: "Where business meets artificial intelligence — at Harvard Business School.",
+  },
 };
 
 export default function RootLayout({

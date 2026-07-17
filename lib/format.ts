@@ -55,3 +55,13 @@ export function slugify(s: string): string {
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
 }
+
+/** Strip a leading internal club tag like "[AI Club] " from an event title. */
+export function displayTitle(name: string): string {
+  return name.replace(/^\s*\[[^\]]+\]\s*/, "").trim() || name;
+}
+
+/** Clean a company name for display (drop parentheticals like "Microsoft (Azure AIOps)"). */
+export function cleanCompany(name: string): string {
+  return name.replace(/\s*\([^)]*\)\s*/g, " ").replace(/\s+/g, " ").trim();
+}
