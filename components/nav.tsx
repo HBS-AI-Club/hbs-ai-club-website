@@ -31,7 +31,7 @@ export function Nav() {
     <header
       className={`sticky top-0 z-[80] transition-colors duration-300 ${
         onDark
-          ? "border-b border-transparent bg-transparent"
+          ? "border-b border-white/5 bg-ink"
           : "border-b border-line bg-paper/85 backdrop-blur-md"
       }`}
     >
