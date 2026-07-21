@@ -39,7 +39,7 @@ export default function JoinPage() {
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <a
             href="mailto:ai@studentclubs.hbs.edu?subject=Joining%20the%20HBS%20AI%20Club&body=Hi%20AI%20Club%20team%2C%20I%27d%20like%20to%20join%20the%20club%20and%20get%20on%20the%20mailing%20list."
-            className="flex flex-col rounded-xl bg-paper p-5 ring-1 ring-line transition-shadow hover:shadow-[0_2px_20px_rgba(26,23,20,0.06)]"
+            className="flex flex-col rounded-xl bg-paper p-5 ring-1 ring-line transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]"
           >
             <span className="eyebrow text-crimson">Email us</span>
             <span className="mt-1 font-display text-lg">ai@studentclubs.hbs.edu</span>
@@ -51,7 +51,7 @@ export default function JoinPage() {
             href="https://www.hbs.edu/mba/student-life/activities-government-and-clubs/student-clubs/ai-club"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col rounded-xl bg-paper p-5 ring-1 ring-line transition-shadow hover:shadow-[0_2px_20px_rgba(26,23,20,0.06)]"
+            className="flex flex-col rounded-xl bg-paper p-5 ring-1 ring-line transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]"
           >
             <span className="eyebrow text-crimson">Club portal</span>
             <span className="mt-1 font-display text-lg">Official HBS page ↗</span>

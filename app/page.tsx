@@ -117,7 +117,7 @@ export default async function Home() {
                   <Reveal key={e.id} delay={i * 90}>
                     <Link
                       href={`/events/${e.slug}`}
-                      className="flex h-full flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(26,23,20,0.06)]"
+                      className="flex h-full flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]"
                     >
                       <div className="flex items-center justify-between">
                         <span
@@ -185,13 +185,13 @@ export default async function Home() {
       {/* CTA band */}
       <section className="mx-auto max-w-6xl px-5 pb-24">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl bg-ink px-8 py-14 text-paper sm:px-14">
+          <div className="relative overflow-hidden rounded-3xl border border-line bg-paper-2 px-8 py-14 text-ink sm:px-14">
             <div className="hero-grid-dark absolute inset-0 opacity-40" />
             <div className="relative max-w-2xl">
               <h2 className="font-display text-3xl leading-tight sm:text-4xl">
                 Come build the future of AI with us.
               </h2>
-              <p className="mt-3 text-paper/70">
+              <p className="mt-3 text-muted">
                 Open to every HBS student — technical or not. Join the list and never miss an event.
               </p>
               <Link

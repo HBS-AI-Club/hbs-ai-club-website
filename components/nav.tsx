@@ -74,7 +74,7 @@ export function Nav() {
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               onDark
                 ? "bg-paper text-ink hover:bg-crimson hover:text-white"
-                : "bg-ink text-paper hover:bg-crimson"
+                : "bg-crimson text-white hover:bg-crimson-dark"
             }`}
           >
             Join
@@ -108,7 +108,7 @@ export function Nav() {
             <Link
               href="/join"
               onClick={() => setOpen(false)}
-              className="mt-1 mb-2 w-fit rounded-full bg-ink px-4 py-1.5 text-sm font-medium text-paper"
+              className="mt-1 mb-2 w-fit rounded-full bg-crimson px-4 py-1.5 text-sm font-medium text-white"
             >
               Join
             </Link>

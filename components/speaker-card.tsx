@@ -4,7 +4,7 @@ import { Avatar } from "./avatar";
 
 export function SpeakerCard({ speaker }: { speaker: Speaker }) {
   return (
-    <article className="flex flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(26,23,20,0.06)]">
+    <article className="flex flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]">
       <Link href={`/speakers/${speaker.slug}`} className="group flex items-center gap-4">
         <Avatar name={speaker.name} src={speaker.headshot} size={56} />
         <div className="min-w-0">

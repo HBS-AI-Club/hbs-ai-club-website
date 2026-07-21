@@ -36,7 +36,7 @@ export default async function LearnPage() {
                 href={r.link || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(26,23,20,0.06)]"
+                className="flex flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]"
               >
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   {r.type && (
@@ -78,7 +78,7 @@ export default async function LearnPage() {
                 href={p.link || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(26,23,20,0.06)]"
+                className="flex flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]"
               >
                 {p.category && (
                   <span className="w-fit rounded-full bg-crimson-soft px-2 py-0.5 text-[11px] font-medium text-crimson">

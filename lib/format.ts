@@ -4,11 +4,11 @@ export const CATEGORY_META: Record<
   EventCategory,
   { label: string; color: string; soft: string }
 > = {
-  fireside: { label: "Fireside Chat", color: "#a51c30", soft: "#f4e3e5" },
-  technical: { label: "Technical Learning", color: "#1f5e8b", soft: "#e2edf4" },
-  social: { label: "Social", color: "#b5762a", soft: "#f6ecdd" },
-  workshop: { label: "Workshop", color: "#6b4a9c", soft: "#ece4f5" },
-  other: { label: "Event", color: "#4a4540", soft: "#eeece7" },
+  fireside: { label: "Fireside Chat", color: "#ef6f81", soft: "#2a1519" },
+  technical: { label: "Technical Learning", color: "#6fb2e6", soft: "#111f2b" },
+  social: { label: "Social", color: "#dda45f", soft: "#241a10" },
+  workshop: { label: "Workshop", color: "#bb9cea", soft: "#1d1728" },
+  other: { label: "Event", color: "#b6b6bd", soft: "#1b1b1e" },
 };
 
 /** Parse a Notion date. Date-only strings are anchored at local noon to dodge

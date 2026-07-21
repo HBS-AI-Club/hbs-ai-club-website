@@ -1,31 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand */
-  --color-crimson: #a51c30;
-  --color-crimson-dark: #7d1523;
-  --color-crimson-soft: #f4e3e5;
+  /* Crimson accent (brightened to read on dark) */
+  --color-crimson: #e15b6e;
+  --color-crimson-dark: #c4485a;
+  --color-crimson-soft: #2a1519;
 
-  /* Editorial neutrals */
-  --color-paper: #fbfaf7;
-  --color-paper-2: #f3efe7;
-  --color-ink: #1a1714;
-  --color-ink-soft: #4a4540;
-  --color-muted: #7c756c;
-  --color-line: #e6e1d8;
+  /* Dark cinematic neutrals */
+  --color-paper: #0a0a0a;
+  --color-paper-2: #16161a;
+  --color-ink: #f4f4f5;
+  --color-ink-soft: #b6b6bd;
+  --color-muted: #8c8c94;
+  --color-line: #29292e;
 
   /* Category accents */
-  --color-cat-fireside: #a51c30;
-  --color-cat-technical: #1f5e8b;
-  --color-cat-social: #b5762a;
-  --color-cat-workshop: #6b4a9c;
+  --color-cat-fireside: #e15b6e;
+  --color-cat-technical: #5fa8dc;
+  --color-cat-social: #d09a54;
+  --color-cat-workshop: #b08fe0;
 
-  --font-display: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-instrument), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-sans), system-ui, sans-serif;
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {

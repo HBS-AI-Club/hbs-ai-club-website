@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, Instrument_Serif } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/footer";
-
-const display = Fraunces({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
 
 const sans = Inter({
   variable: "--font-sans",
@@ -57,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${instrument.variable} h-full antialiased`}
+      className={`${sans.variable} ${instrument.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <main className="flex-1">{children}</main>

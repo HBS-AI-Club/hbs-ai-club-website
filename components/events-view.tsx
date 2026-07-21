@@ -71,7 +71,7 @@ export function EventsView({ events }: { events: EventItem[] }) {
                 onClick={() => setFilter(f)}
                 className={`rounded-full px-3 py-1.5 capitalize transition-colors ${
                   filter === f
-                    ? "bg-ink text-paper"
+                    ? "bg-crimson text-white"
                     : "text-muted hover:text-ink"
                 }`}
               >
@@ -106,7 +106,7 @@ export function EventsView({ events }: { events: EventItem[] }) {
               key={k}
               onClick={() => setCat(k)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                cat === k ? "bg-ink text-paper" : "bg-paper-2 text-muted hover:text-ink"
+                cat === k ? "bg-crimson text-white" : "bg-paper-2 text-muted hover:text-ink"
               }`}
             >
               {label}
@@ -390,7 +390,7 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
   const meta = CATEGORY_META[event.category];
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-ink/40 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 p-0 backdrop-blur-sm sm:items-center sm:p-4"
       onClick={onClose}
     >
       <div

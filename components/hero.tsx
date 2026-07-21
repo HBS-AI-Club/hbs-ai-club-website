@@ -113,25 +113,15 @@ export function Hero() {
         {/* cinematic hero content, positioned in the upper area */}
         <div className="flex flex-1 flex-col items-center justify-start px-6 pt-[12vh] pb-24 text-center">
           <h1
-            className="animate-fade-rise max-w-7xl font-instrument text-5xl font-normal leading-[0.95] tracking-[-2.46px] sm:text-7xl md:text-8xl"
+            className="animate-fade-rise max-w-7xl font-instrument text-5xl font-normal leading-[0.95] tracking-[-2.46px] text-white sm:text-7xl md:text-8xl"
             style={{ textShadow }}
           >
-            Where <em className="not-italic text-white/55">business</em> meets{" "}
-            <em className="not-italic text-white/55">artificial intelligence.</em>
+            Where business meets artificial intelligence.
           </h1>
-
-          <p
-            className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg"
-            style={{ textShadow }}
-          >
-            We bring the people building AI to campus, run hands-on technical learning,
-            and connect the students who will define what comes next — whatever your
-            starting point.
-          </p>
 
           <Link
             href="/join"
-            className="liquid-glass animate-fade-rise-delay-2 mt-12 inline-block cursor-pointer rounded-full px-14 py-5 text-base text-white hover:scale-[1.03]"
+            className="liquid-glass animate-fade-rise-delay mt-12 inline-block cursor-pointer rounded-full px-14 py-5 text-base text-white hover:scale-[1.03]"
             style={{ textShadow }}
           >
             Begin Journey
