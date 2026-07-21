@@ -40,7 +40,7 @@ export default async function Home() {
 
   return (
     <div>
-      <Hero companies={companyList} stats={stats} />
+      <Hero />
 
       {/* Stat strip */}
       <section className="mx-auto max-w-6xl px-5 py-14">

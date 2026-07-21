@@ -27,6 +27,9 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // The homepage has its own glassmorphic nav inside the video hero.
+  if (isHome) return null;
+
   return (
     <header
       className={`sticky top-0 z-[80] transition-colors duration-300 ${
@@ -40,11 +43,7 @@ export function Nav() {
           <span className="grid h-7 w-7 place-items-center rounded-[7px] bg-crimson text-[13px] font-bold text-white">
             AI
           </span>
-          <span
-            className={`font-display text-[17px] font-semibold tracking-tight transition-colors ${
-              onDark ? "text-paper" : "text-ink"
-            }`}
-          >
+          <span className="font-instrument text-2xl tracking-tight text-ink">
             HBS AI Club
           </span>
         </Link>
