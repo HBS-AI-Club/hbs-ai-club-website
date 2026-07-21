@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 
 const display = Fraunces({
@@ -61,7 +60,6 @@ export default function RootLayout({
       className={`${display.variable} ${sans.variable} ${instrument.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
-        <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

@@ -110,8 +110,8 @@ export function Hero() {
           </div>
         )}
 
-        {/* cinematic hero content, vertically centered */}
-        <div className="flex flex-1 flex-col items-center justify-center px-6 py-[90px] text-center">
+        {/* cinematic hero content, positioned in the upper area */}
+        <div className="flex flex-1 flex-col items-center justify-start px-6 pt-[12vh] pb-24 text-center">
           <h1
             className="animate-fade-rise max-w-7xl font-instrument text-5xl font-normal leading-[0.95] tracking-[-2.46px] sm:text-7xl md:text-8xl"
             style={{ textShadow }}
