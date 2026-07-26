@@ -6,63 +6,72 @@ export const revalidate = 60;
 export const metadata = {
   title: "Speakers",
   description:
-    "The founders, investors, researchers, and operators who have spoken at the HBS AI Club.",
+    "Founders, investors, researchers, and operators who have shared their thinking with the HBS AI Club.",
 };
 
 export default async function SpeakersPage() {
   const speakers = await getSpeakers();
-  const featured = speakers.filter((s) => s.featured);
-  const rest = speakers.filter((s) => !s.featured);
+  const featured = speakers.filter((speaker) => speaker.featured);
+  const rest = speakers.filter((speaker) => !speaker.featured);
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-14">
-      <header className="max-w-2xl">
-        <div className="eyebrow text-crimson">Speakers</div>
-        <h1 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">
-          The people building what&apos;s next
-        </h1>
-        <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-          We bring the operators, founders, and investors defining the AI era to
-          campus. Here are some of the guests who have joined us.
-        </p>
+    <div>
+      <header className="relative overflow-hidden border-b border-line">
+        <div className="editorial-grid absolute inset-0 opacity-25" />
+        <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+          <div className="eyebrow text-crimson">Speakers</div>
+          <div className="mt-4 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+            <h1 className="max-w-4xl font-instrument text-5xl leading-[0.98] tracking-[-0.04em] sm:text-7xl">
+              The people building{" "}
+              <span className="italic text-crimson">what comes next.</span>
+            </h1>
+            <p className="max-w-md text-base leading-relaxed text-ink-soft lg:justify-self-end">
+              Candid conversations with the operators, founders, researchers, and
+              investors turning AI from a capability into companies and change.
+            </p>
+          </div>
+        </div>
       </header>
 
-      {speakers.length === 0 ? (
-        <EmptyState />
-      ) : (
-        <>
-          {featured.length > 0 && (
-            <section className="mt-12">
-              <h2 className="eyebrow mb-4 text-muted">Featured guests</h2>
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {featured.map((s) => (
-                  <SpeakerCard key={s.id} speaker={s} />
-                ))}
-              </div>
-            </section>
-          )}
+      <main className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+        {speakers.length === 0 ? (
+          <div className="rounded-3xl border border-dashed border-line bg-paper-2 px-6 py-20 text-center">
+            <p className="font-instrument text-2xl">Speaker archive coming soon</p>
+          </div>
+        ) : (
+          <>
+            {featured.length > 0 && (
+              <section>
+                <div className="flex items-end justify-between border-b border-line pb-5">
+                  <div>
+                    <div className="eyebrow text-crimson">Selected voices</div>
+                    <h2 className="mt-2 font-instrument text-3xl">Featured guests</h2>
+                  </div>
+                  <span className="text-sm text-muted">{featured.length} profiles</span>
+                </div>
+                <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                  {featured.map((speaker) => (
+                    <SpeakerCard key={speaker.id} speaker={speaker} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-          {rest.length > 0 && (
-            <section className="mt-12">
-              <h2 className="eyebrow mb-4 text-muted">More speakers</h2>
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {rest.map((s) => (
-                  <SpeakerCard key={s.id} speaker={s} />
-                ))}
-              </div>
-            </section>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div className="mt-12 rounded-2xl border border-dashed border-line bg-paper-2 px-6 py-16 text-center">
-      <p className="font-display text-xl">Speaker archive coming soon</p>
-      <p className="mt-2 text-sm text-muted">Check back as we add past guests.</p>
+            {rest.length > 0 && (
+              <section className="mt-24">
+                <div className="eyebrow border-b border-line pb-5 text-muted">
+                  More from our community
+                </div>
+                <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                  {rest.map((speaker) => (
+                    <SpeakerCard key={speaker.id} speaker={speaker} />
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+      </main>
     </div>
   );
 }

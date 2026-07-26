@@ -28,18 +28,18 @@ export const metadata: Metadata = {
     template: "%s · HBS AI Club",
   },
   description:
-    "The Harvard Business School Artificial Intelligence Club — fireside chats, technical learning, and community at the frontier of AI and business.",
+    "The Harvard Business School Artificial Intelligence Club—technical learning, candid conversations, and community at the frontier of AI and business.",
   openGraph: {
     title: "HBS AI Club",
     description:
-      "Where business meets artificial intelligence. Fireside chats, technical learning, and community at Harvard Business School.",
+      "Where business meets artificial intelligence. Technical learning, candid conversations, and community at Harvard Business School.",
     siteName: "HBS AI Club",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "HBS AI Club",
-    description: "Where business meets artificial intelligence — at Harvard Business School.",
+    description: "Where business meets artificial intelligence—at Harvard Business School.",
   },
 };
 

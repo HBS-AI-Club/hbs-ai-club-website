@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* Crimson accent (brightened to read on dark) */
   --color-crimson: #e15b6e;
   --color-crimson-dark: #c4485a;
   --color-crimson-soft: #2a1519;
 
-  /* Dark cinematic neutrals */
   --color-paper: #0a0a0a;
   --color-paper-2: #16161a;
+  --color-paper-3: #1a1a1e;
   --color-ink: #f4f4f5;
   --color-ink-soft: #b6b6bd;
   --color-muted: #8c8c94;
   --color-line: #29292e;
+  --color-electric: #b7f36b;
 
   /* Category accents */
   --color-cat-fireside: #e15b6e;
@@ -45,10 +45,10 @@ body {
 }
 
 .eyebrow {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Visible keyboard-focus ring for accessibility (mouse clicks stay clean) */
@@ -85,6 +85,33 @@ body {
     transparent 0
   );
   background-size: 26px 26px;
+}
+
+.editorial-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.soft-glow {
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.hairline-card {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(20, 20, 23, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* ------------------------------- motion ------------------------------- */

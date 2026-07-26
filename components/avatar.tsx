@@ -11,8 +11,9 @@ export function Avatar({
   size?: number;
 }) {
   if (src) {
-    // eslint-disable-next-line @next/next/no-img-element
     return (
+      // Notion supplies short-lived remote URLs that cannot be allowlisted safely.
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         src={src}
         alt={name}

@@ -3,11 +3,8 @@ import { notFound } from "next/navigation";
 import {
   getSpeakers,
   getSpeakerBySlug,
-  getEvents,
-  eventsForSpeaker,
 } from "@/lib/notion";
 import { Avatar } from "@/components/avatar";
-import { CATEGORY_META, fmtDate } from "@/lib/format";
 
 export const revalidate = 60;
 
@@ -39,75 +36,56 @@ export default async function SpeakerDetail({
   const speaker = await getSpeakerBySlug(slug);
   if (!speaker) notFound();
 
-  const events = await getEvents();
-  const talks = eventsForSpeaker(events, speaker.name).slice().reverse();
-
   return (
-    <div className="mx-auto max-w-3xl px-5 py-14">
-      <Link href="/speakers" className="text-sm text-muted hover:text-crimson">
-        ← All speakers
-      </Link>
+    <div className="relative overflow-hidden">
+      <div className="editorial-grid absolute inset-0 opacity-[0.14]" />
+      <div className="relative mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
+        <Link href="/speakers" className="text-sm text-muted hover:text-crimson">
+          ← All speakers
+        </Link>
 
-      <header className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-        <Avatar name={speaker.name} src={speaker.headshot} size={96} />
-        <div>
-          {speaker.featured && (
-            <span className="eyebrow text-crimson">Featured guest</span>
-          )}
-          <h1 className="mt-1 font-display text-4xl leading-tight">{speaker.name}</h1>
-          <p className="mt-1 text-lg text-ink-soft">
-            {speaker.title}
-            {speaker.company ? ` · ${speaker.company}` : ""}
-          </p>
-          {speaker.linkedin && (
-            <a
-              href={speaker.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block rounded-full border border-line px-4 py-1.5 text-sm font-medium text-crimson hover:border-crimson"
-            >
-              LinkedIn ↗
-            </a>
-          )}
+        <header className="mt-12 grid gap-8 border-b border-line pb-12 sm:grid-cols-[8rem_1fr] sm:items-center">
+          <Avatar name={speaker.name} src={speaker.headshot} size={128} />
+          <div>
+            {speaker.featured && (
+              <span className="eyebrow text-crimson">Featured guest</span>
+            )}
+            <h1 className="mt-2 font-instrument text-5xl leading-tight tracking-tight sm:text-6xl">
+              {speaker.name}
+            </h1>
+            <p className="mt-2 text-base text-ink-soft">
+              {[speaker.title, speaker.company].filter(Boolean).join(" · ")}
+            </p>
+            {speaker.linkedin && (
+              <a
+                href={speaker.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex rounded-full border border-line px-4 py-2 text-xs font-semibold uppercase tracking-wider text-crimson hover:border-crimson"
+              >
+                View on LinkedIn ↗
+              </a>
+            )}
+          </div>
+        </header>
+
+        <div className="grid gap-10 py-12 lg:grid-cols-[0.7fr_1.3fr]">
+          <div className="eyebrow text-muted">Why we invited them</div>
+          <div>
+            {speaker.bio && (
+              <p className="text-xl leading-relaxed text-ink-soft">{speaker.bio}</p>
+            )}
+            {speaker.talk && (
+              <blockquote className="mt-10 border-l-2 border-crimson pl-6">
+                <div className="eyebrow text-crimson">Conversation</div>
+                <p className="mt-3 font-instrument text-3xl italic leading-tight">
+                  “{speaker.talk}”
+                </p>
+              </blockquote>
+            )}
+          </div>
         </div>
-      </header>
-
-      {speaker.bio && (
-        <p className="mt-8 border-t border-line pt-8 text-lg leading-relaxed text-ink-soft">
-          {speaker.bio}
-        </p>
-      )}
-
-      <section className="mt-10">
-        <h2 className="eyebrow mb-4 text-muted">At the AI Club</h2>
-        {talks.length === 0 ? (
-          <p className="text-sm text-muted">
-            {speaker.talk ? `Spoke on “${speaker.talk}.”` : "Details coming soon."}
-          </p>
-        ) : (
-          <ul className="divide-y divide-line border-t border-line">
-            {talks.map((e) => {
-              const m = CATEGORY_META[e.category];
-              return (
-                <li key={e.id}>
-                  <Link href={`/events/${e.slug}`} className="group flex items-center gap-4 py-4">
-                    <span
-                      className="rounded-full px-2 py-0.5 text-[11px] font-medium"
-                      style={{ background: m.soft, color: m.color }}
-                    >
-                      {m.label}
-                    </span>
-                    <span className="flex-1 font-display text-lg group-hover:text-crimson">
-                      {e.name}
-                    </span>
-                    <span className="text-sm text-muted">{fmtDate(e.date, "medium")}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
+      </div>
     </div>
   );
 }

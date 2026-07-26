@@ -1,14 +1,14 @@
 // Notion CMS data layer for the HBS AI Club site.
 // Uses the stable REST API (version 2022-06-28) via fetch — no SDK version surprises.
+/* eslint-disable @typescript-eslint/no-explicit-any -- Notion database property shapes are dynamic and CMS-defined. */
 
-import { slugify, displayTitle } from "./format";
+import { slugify } from "./format";
 
 const TOKEN = process.env.NOTION_TOKEN;
 const NOTION_VERSION = "2022-06-28";
 const REVALIDATE = 60; // seconds; page-level ISR also set per route
 
 export const DB = {
-  events: "399d8dc3-9a12-813e-a0dc-c0227d025104",
   speakers: "399d8dc3-9a12-81d6-8d3d-d3f611f445e9",
   leadership: "399d8dc3-9a12-8138-a668-fa51e77f422f",
   podcasts: "399d8dc3-9a12-8117-bd80-db300cb43ce9",
@@ -63,24 +63,6 @@ const gFile = (p: any, k: string): string | null => {
 };
 
 // ---- domain types --------------------------------------------------------
-export type EventCategory = "fireside" | "technical" | "social" | "workshop" | "other";
-
-export interface EventItem {
-  id: string;
-  slug: string;
-  name: string;
-  date: string | null;
-  time: string;
-  location: string;
-  type: string;
-  category: EventCategory;
-  description: string;
-  speaker: string;
-  company: string;
-  coHosts: string;
-  cover: string | null;
-}
-
 export interface Speaker {
   id: string;
   slug: string;
@@ -127,15 +109,6 @@ export interface Podcast {
   description: string;
 }
 
-function categorize(type: string): EventCategory {
-  const t = type.toLowerCase();
-  if (t.includes("fireside")) return "fireside";
-  if (t.includes("technical")) return "technical";
-  if (t.includes("social")) return "social";
-  if (t.includes("workshop")) return "workshop";
-  return "other";
-}
-
 const PUBLISHED = { property: "Show on Website", checkbox: { equals: true } };
 
 /** Assign a URL-safe, unique slug to each item (deterministic given stable order). */
@@ -150,34 +123,6 @@ function assignSlugs<T extends { name: string }>(items: T[]): (T & { slug: strin
 }
 
 // ---- fetchers ------------------------------------------------------------
-export async function getEvents(): Promise<EventItem[]> {
-  const rows = await notionQuery(DB.events, {
-    filter: PUBLISHED,
-    sorts: [{ property: "Date", direction: "ascending" }],
-  });
-  const items = rows.map((r) => {
-    const p = P(r);
-    const type = gSelect(p, "Type");
-    return {
-      id: r.id,
-      name: gTitle(p, "Name"),
-      date: gDate(p, "Date"),
-      time: gRich(p, "Time"),
-      location: gRich(p, "Location"),
-      type,
-      category: categorize(type),
-      description: gRich(p, "Description"),
-      speaker: gRich(p, "Speaker"),
-      company: gRich(p, "Company"),
-      coHosts: gRich(p, "Co-Hosts"),
-      cover: gFile(p, "Cover Image"),
-    };
-  });
-  // Slugs come from the raw title (stable URLs); the visible name drops internal
-  // club tags like "[AI Club] ".
-  return assignSlugs(items).map((e) => ({ ...e, name: displayTitle(e.name) }));
-}
-
 export async function getSpeakers(): Promise<Speaker[]> {
   const rows = await notionQuery(DB.speakers, { filter: PUBLISHED });
   return assignSlugs(
@@ -200,21 +145,9 @@ export async function getSpeakers(): Promise<Speaker[]> {
   );
 }
 
-export async function getEventBySlug(slug: string): Promise<EventItem | null> {
-  const events = await getEvents();
-  return events.find((e) => e.slug === slug) ?? null;
-}
-
 export async function getSpeakerBySlug(slug: string): Promise<Speaker | null> {
   const speakers = await getSpeakers();
   return speakers.find((s) => s.slug === slug) ?? null;
-}
-
-/** Events whose Speaker field mentions this speaker's name. */
-export function eventsForSpeaker(events: EventItem[], speakerName: string): EventItem[] {
-  const n = speakerName.trim().toLowerCase();
-  if (!n) return [];
-  return events.filter((e) => e.speaker.toLowerCase().includes(n));
 }
 
 export async function getLeadership(): Promise<Leader[]> {

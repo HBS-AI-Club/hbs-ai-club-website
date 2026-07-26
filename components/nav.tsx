@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { href: "/events", label: "Events" },
   { href: "/speakers", label: "Speakers" },
   { href: "/leadership", label: "Leadership" },
   { href: "/learn", label: "Learn" },
+  { href: "/sponsorship", label: "Sponsorship" },
 ];
 
 export function Nav() {
@@ -40,10 +40,10 @@ export function Nav() {
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="grid h-7 w-7 place-items-center rounded-[7px] bg-crimson text-[13px] font-bold text-white">
+          <span className="grid h-8 w-8 place-items-center rounded-[9px] bg-crimson text-[12px] font-bold text-white">
             AI
           </span>
-          <span className="font-instrument text-2xl tracking-tight text-ink">
+          <span className="font-instrument text-[1.55rem] tracking-tight text-ink">
             HBS AI Club
           </span>
         </Link>
@@ -71,7 +71,7 @@ export function Nav() {
           })}
           <Link
             href="/join"
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
               onDark
                 ? "bg-paper text-ink hover:bg-crimson hover:text-white"
                 : "bg-crimson text-white hover:bg-crimson-dark"
@@ -82,13 +82,11 @@ export function Nav() {
         </div>
 
         <button
-          className={`transition-colors md:hidden ${onDark ? "text-paper" : "text-ink-soft"}`}
+          className={`rounded-full border border-line px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors md:hidden ${onDark ? "text-paper" : "text-ink-soft"}`}
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-            {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-          </svg>
+          {open ? "Close" : "Menu"}
         </button>
       </nav>
 

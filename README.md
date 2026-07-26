@@ -8,7 +8,6 @@ Everything on the site is pulled live from the Notion workspace **"HBS AI Club W
 
 | Section | Notion database |
 | --- | --- |
-| Events (calendar + agenda) | Events |
 | Speakers | Speakers |
 | Leadership | Leadership (has a `Tenure` field: Current / Past board) |
 | Learn | Learning Resources + Podcasts |
@@ -36,7 +35,7 @@ The site auto-deploys from `main`. The only required environment variable is `NO
 
 ## Structure
 
-- `app/` — routes (home, events, speakers, leadership, learn, join, plus `[slug]` detail pages)
-- `components/` — UI (animated hero + interactive canvas, nav, events calendar/agenda, cards)
+- `app/` — routes (home, speakers, leadership, learn, join, plus speaker `[slug]` detail pages)
+- `components/` — UI (cinematic hero, navigation, learning filters, and profile cards)
 - `lib/notion.ts` — the Notion data layer (database IDs live here)
-- `lib/format.ts` — date/slug/category helpers
+- `lib/format.ts` — shared display helpers

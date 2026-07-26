@@ -16,10 +16,10 @@ export default function NotFound() {
           Back home
         </Link>
         <Link
-          href="/events"
+          href="/learn"
           className="rounded-full border border-ink/15 px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-ink/40"
         >
-          Browse events
+          Explore the field guide
         </Link>
       </div>
     </div>

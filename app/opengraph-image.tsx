@@ -1,10 +1,9 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "HBS AI Club — where business meets artificial intelligence";
+export const alt = "HBS AI Club—where business meets artificial intelligence";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Branded social-share card, rendered at build time.
 export default function OpengraphImage() {
   return new ImageResponse(
     (
@@ -50,7 +49,7 @@ export default function OpengraphImage() {
         </div>
 
         <div style={{ fontSize: 30, opacity: 0.7 }}>
-          HBS AI Club — events · speakers · community
+          HBS AI Club—speakers · learning · community
         </div>
       </div>
     ),
