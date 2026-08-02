@@ -4,7 +4,7 @@ import { Avatar } from "./avatar";
 
 export function SpeakerCard({ speaker }: { speaker: Speaker }) {
   return (
-    <article className="group flex min-h-72 flex-col rounded-3xl border border-line bg-paper-2/65 p-6 transition duration-300 hover:-translate-y-1 hover:border-muted/60 hover:bg-paper-3">
+    <article className="group flex min-h-56 flex-col rounded-3xl border border-line bg-paper-2/65 p-6 transition duration-300 hover:-translate-y-1 hover:border-muted/60 hover:bg-paper-3">
       <Link href={`/speakers/${speaker.slug}`} className="flex items-center gap-4">
         <Avatar name={speaker.name} src={speaker.headshot} size={64} />
         <div className="min-w-0">
@@ -17,12 +17,6 @@ export function SpeakerCard({ speaker }: { speaker: Speaker }) {
           </p>
         </div>
       </Link>
-
-      {speaker.bio && (
-        <p className="mt-6 line-clamp-4 text-sm leading-relaxed text-ink-soft">
-          {speaker.bio}
-        </p>
-      )}
 
       <div className="mt-auto flex items-end justify-between border-t border-line pt-5">
         {speaker.talk ? (

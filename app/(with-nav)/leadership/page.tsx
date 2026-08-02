@@ -19,7 +19,7 @@ export default async function LeadershipPage() {
 
   return (
     <div>
-      <header className="relative overflow-hidden border-b border-line">
+      <header className="page-hero relative overflow-hidden border-b border-line">
         <div className="editorial-grid absolute inset-0 opacity-25" />
         <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
           <div className="eyebrow text-crimson">Leadership</div>
@@ -37,7 +37,7 @@ export default async function LeadershipPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
         {leaders.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-line bg-paper-2 px-6 py-20 text-center">
             <p className="font-instrument text-2xl">Board page coming soon</p>
@@ -80,7 +80,7 @@ export default async function LeadershipPage() {
             )}
           </>
         )}
-      </main>
+      </div>
     </div>
   );
 }

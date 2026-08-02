@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLeadership, getResources, getSpeakers } from "@/lib/notion";
+import { getLeadership, getSpeakers } from "@/lib/notion";
 import { Hero } from "@/components/hero";
 import { Reveal } from "@/components/reveal";
 import { Avatar } from "@/components/avatar";
@@ -28,19 +28,20 @@ const PILLARS = [
 ];
 
 export default async function Home() {
-  const [speakers, leaders, resources] = await Promise.all([
+  const [speakers, leaders] = await Promise.all([
     getSpeakers(),
     getLeadership(),
-    getResources(),
   ]);
 
   const featured = speakers.filter((speaker) => speaker.featured).slice(0, 6);
-  const starterResources = resources.slice(0, 3);
+  const currentLeaders = leaders.filter(
+    (leader) => leader.tenure === "Current Board"
+  );
   const stats = [
     { number: "400+", label: "club members" },
+    { number: "30+", label: "programs last year" },
     { number: `${speakers.length}`, label: "guest speakers" },
-    { number: `${resources.length}`, label: "curated resources" },
-    { number: `${leaders.length}`, label: "student leaders" },
+    { number: `${currentLeaders.length || leaders.length}`, label: "current board members" },
   ];
 
   return (
@@ -66,6 +67,7 @@ export default async function Home() {
 
       <section className="mx-auto max-w-5xl px-5 py-16">
         <Reveal>
+          <div className="eyebrow mb-5 text-crimson">What membership looks like</div>
           <p className="font-display text-3xl leading-[1.15] tracking-tight sm:text-5xl">
             We bring the frontier to campus—and put{" "}
             <span className="italic text-crimson">students</span> at the center of it.
@@ -89,47 +91,6 @@ export default async function Home() {
           ))}
         </div>
       </section>
-
-      {starterResources.length > 0 && (
-        <section className="border-y border-line bg-paper-2">
-          <div className="mx-auto max-w-6xl px-5 py-16">
-            <Reveal>
-              <div className="flex items-end justify-between">
-                <div>
-                  <div className="eyebrow text-crimson">Start here</div>
-                  <h2 className="mt-2 font-display text-3xl">From the field guide</h2>
-                </div>
-                <Link href="/learn" className="text-sm font-medium text-crimson hover:underline">
-                  Explore Learn →
-                </Link>
-              </div>
-            </Reveal>
-            <div className="mt-8 grid gap-5 md:grid-cols-3">
-              {starterResources.map((resource, index) => (
-                <Reveal key={resource.id} delay={index * 90}>
-                  <a
-                    href={resource.link || "/learn"}
-                    target={resource.link ? "_blank" : undefined}
-                    rel={resource.link ? "noopener noreferrer" : undefined}
-                    className="flex h-full flex-col rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-[0_2px_20px_rgba(255,255,255,0.06)]"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-crimson-soft px-2 py-0.5 text-[11px] font-medium text-crimson">
-                        {resource.type || "Resource"}
-                      </span>
-                      <span className="text-xs text-muted">{resource.level}</span>
-                    </div>
-                    <h3 className="mt-3 font-display text-lg leading-snug">{resource.name}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      {resource.description}
-                    </p>
-                  </a>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {featured.length > 0 && (
         <section className="mx-auto max-w-6xl px-5 py-20">

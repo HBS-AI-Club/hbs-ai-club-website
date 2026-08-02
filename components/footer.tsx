@@ -2,17 +2,12 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-line bg-paper-2/80">
+    <footer className="mt-24 border-t border-white/10 bg-[#0d0609]/90">
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-16">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-md">
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-8 w-8 place-items-center rounded-[9px] bg-crimson text-[12px] font-bold text-white">
-                AI
-              </span>
-              <span className="font-instrument text-2xl">
-                HBS AI Club
-              </span>
+            <div className="font-instrument text-3xl tracking-tight text-white">
+              HBS AI Club
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted">
               The student community helping HBS understand, use, and lead through

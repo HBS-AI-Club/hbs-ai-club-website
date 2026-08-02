@@ -49,10 +49,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${sans.variable} ${instrument.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
-        <main className="flex-1">{children}</main>
+        <a
+          href="#main-content"
+          className="sr-only fixed left-4 top-4 z-[120] rounded-full bg-crimson px-4 py-2 text-sm font-semibold text-white focus:not-sr-only"
+        >
+          Skip to content
+        </a>
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

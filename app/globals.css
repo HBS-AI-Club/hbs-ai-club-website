@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-crimson: #e15b6e;
-  --color-crimson-dark: #c4485a;
-  --color-crimson-soft: #2a1519;
+  --color-crimson: #ef6f81;
+  --color-crimson-dark: #d65468;
+  --color-crimson-soft: #35171e;
 
-  --color-paper: #0a0a0a;
-  --color-paper-2: #16161a;
-  --color-paper-3: #1a1a1e;
-  --color-ink: #f4f4f5;
-  --color-ink-soft: #b6b6bd;
-  --color-muted: #8c8c94;
-  --color-line: #29292e;
-  --color-electric: #b7f36b;
+  --color-paper: #10080b;
+  --color-paper-2: #1a0d12;
+  --color-paper-3: #241117;
+  --color-ink: #fffaf8;
+  --color-ink-soft: #d8c7c5;
+  --color-muted: #a98f92;
+  --color-line: #3b2229;
+  --color-electric: #f2bd74;
 
   /* Category accents */
   --color-cat-fireside: #e15b6e;
@@ -29,7 +29,7 @@
 }
 
 html {
-  background: var(--color-paper);
+  background: #10080b;
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
@@ -37,7 +37,10 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-paper);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(149, 35, 56, 0.16), transparent 32rem),
+    radial-gradient(circle at 88% 38%, rgba(214, 84, 104, 0.08), transparent 28rem),
+    var(--color-paper);
 }
 
 .font-display {
@@ -45,7 +48,7 @@ body {
 }
 
 .eyebrow {
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 700;
@@ -94,6 +97,38 @@ body {
   background-size: 72px 72px;
 }
 
+.page-hero {
+  background-image:
+    linear-gradient(90deg, rgba(16, 8, 11, 0.96) 0%, rgba(38, 12, 19, 0.83) 54%, rgba(16, 8, 11, 0.9) 100%),
+    url("/hero-poster.jpg");
+  background-position: center 42%;
+  background-size: cover;
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(239, 111, 129, 0.55), transparent);
+  pointer-events: none;
+}
+
+.cinematic-surface {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(140, 30, 50, 0.11), transparent 26rem),
+    radial-gradient(circle at 92% 64%, rgba(219, 112, 66, 0.07), transparent 30rem);
+}
+
+.speaker-detail {
+  background-image:
+    linear-gradient(180deg, rgba(16, 8, 11, 0.62), var(--color-paper) 31rem),
+    url("/hero-poster.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 100% 31rem;
+}
+
 .soft-glow {
   box-shadow:
     0 24px 80px rgba(0, 0, 0, 0.32),
@@ -101,8 +136,8 @@ body {
 }
 
 .hairline-card {
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(20, 20, 23, 0.78);
+  border: 1px solid rgba(239, 111, 129, 0.16);
+  background: rgba(38, 15, 22, 0.76);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
@@ -272,6 +307,9 @@ body {
     animation: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+  video[aria-hidden="true"] {
+    display: none;
   }
   .reveal {
     opacity: 1 !important;

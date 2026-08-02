@@ -37,7 +37,7 @@ export default async function SpeakerDetail({
   if (!speaker) notFound();
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="speaker-detail relative overflow-hidden">
       <div className="editorial-grid absolute inset-0 opacity-[0.14]" />
       <div className="relative mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
         <Link href="/speakers" className="text-sm text-muted hover:text-crimson">

@@ -8,7 +8,7 @@ export default function WithNavLayout({
   return (
     <>
       <Nav />
-      {children}
+      <div className="cinematic-surface">{children}</div>
     </>
   );
 }

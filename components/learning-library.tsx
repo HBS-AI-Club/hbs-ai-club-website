@@ -3,31 +3,43 @@
 import { useMemo, useState } from "react";
 import type { Podcast, Resource } from "@/lib/notion";
 
-const ALL = "All";
-
 const PATHS = [
   {
     label: "New to AI",
-    title: "Build your foundation",
-    description: "Plain-English context before the technical details.",
-    topic: "AI Strategy",
+    title: "Understand the landscape",
+    description: "Build a useful mental model before going deeper.",
+    time: "45 minutes",
+    outcome: "Understand the major capabilities, players, and business questions.",
+    resourceNames: ["The AI Canon", "The Batch", "Building with Claude — Docs"],
+    fallbackTopics: ["AI Strategy"],
     accent: "text-crimson",
   },
   {
     label: "Product & strategy",
     title: "Make better AI bets",
-    description: "Frameworks for products, teams, and defensibility.",
-    topic: "Tools",
+    description: "Connect technical shifts to products, teams, and defensibility.",
+    time: "60 minutes",
+    outcome: "Ask sharper questions about an AI product, company, or operating plan.",
+    resourceNames: ["The AI Canon", "Chip Huyen — Blog & AI Engineering", "The Batch"],
+    fallbackTopics: ["AI Strategy", "Tools"],
     accent: "text-electric",
   },
   {
     label: "Ready to build",
     title: "Go from prompt to prototype",
-    description: "Hands-on guides for LLMs, agents, and applications.",
-    topic: "Agents",
-    accent: "text-[#79bfff]",
+    description: "Use practical guides to create a working first project.",
+    time: "2–3 hours",
+    outcome: "Build a prototype and understand how modern AI applications fit together.",
+    resourceNames: [
+      "DeepLearning.AI Short Courses",
+      "OpenAI Cookbook",
+      "Hugging Face — Learn",
+      "Neural Networks: Zero to Hero",
+    ],
+    fallbackTopics: ["Agents", "Prompting", "ML Fundamentals"],
+    accent: "text-[#f2bd74]",
   },
-];
+] as const;
 
 export function LearningLibrary({
   resources,
@@ -36,241 +48,132 @@ export function LearningLibrary({
   resources: Resource[];
   podcasts: Podcast[];
 }) {
-  const [query, setQuery] = useState("");
-  const [topic, setTopic] = useState(ALL);
-  const [type, setType] = useState(ALL);
-  const [level, setLevel] = useState(ALL);
+  const [activePath, setActivePath] = useState(0);
+  const selectedPath = PATHS[activePath];
 
-  const topics = useMemo(
-    () => [ALL, ...Array.from(new Set(resources.flatMap((resource) => resource.topics)))],
-    [resources]
-  );
-  const types = useMemo(
-    () => [ALL, ...Array.from(new Set(resources.map((resource) => resource.type).filter(Boolean)))],
-    [resources]
-  );
-  const levels = useMemo(
-    () => [ALL, ...Array.from(new Set(resources.map((resource) => resource.level).filter(Boolean)))],
-    [resources]
-  );
+  const pathResources = useMemo(() => {
+    const exact = selectedPath.resourceNames
+      .map((name) => resources.find((resource) => resource.name === name))
+      .filter((resource): resource is Resource => Boolean(resource));
 
-  const visible = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return resources.filter((resource) => {
-      const searchable = [
-        resource.name,
-        resource.description,
-        resource.source,
-        resource.type,
-        resource.level,
-        ...resource.topics,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return (
-        (!normalizedQuery || searchable.includes(normalizedQuery)) &&
-        (topic === ALL || resource.topics.includes(topic)) &&
-        (type === ALL || resource.type === type) &&
-        (level === ALL || resource.level === level)
-      );
+    if (exact.length >= 2) return exact;
+
+    return resources
+      .filter((resource) =>
+        resource.topics.some((resourceTopic) =>
+          selectedPath.fallbackTopics.some((pathTopic) => resourceTopic === pathTopic)
+        )
+      )
+      .slice(0, 4);
+  }, [resources, selectedPath]);
+
+  function choosePath(index: number) {
+    setActivePath(index);
+    requestAnimationFrame(() => {
+      document.getElementById("selected-path")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     });
-  }, [resources, query, topic, type, level]);
-
-  const hasFilters = query || topic !== ALL || type !== ALL || level !== ALL;
-
-  function resetFilters() {
-    setQuery("");
-    setTopic(ALL);
-    setType(ALL);
-    setLevel(ALL);
-  }
-
-  function choosePath(pathTopic: string) {
-    setQuery("");
-    setType(ALL);
-    setLevel(ALL);
-    setTopic(topics.includes(pathTopic) ? pathTopic : ALL);
-    document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
     <>
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-        <div className="eyebrow text-muted">Choose a starting point</div>
+        <div className="eyebrow text-muted">Choose one path</div>
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
-          {PATHS.map((path, index) => (
-            <button
-              key={path.label}
-              type="button"
-              onClick={() => choosePath(path.topic)}
-              className="hairline-card group rounded-2xl p-6 text-left transition-transform hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between">
-                <span className={`eyebrow ${path.accent}`}>{path.label}</span>
-                <span className="font-mono text-xs text-muted">0{index + 1}</span>
-              </div>
-              <h2 className="mt-10 font-instrument text-2xl">{path.title}</h2>
-              <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">
-                {path.description}
-              </p>
-              <span className="mt-6 inline-block text-sm font-semibold text-ink-soft transition-transform group-hover:translate-x-1">
-                Browse this path →
-              </span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section id="library" className="border-y border-line bg-paper-2/65 scroll-mt-20">
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
-          <div className="grid gap-8 lg:grid-cols-[0.65fr_1.35fr]">
-            <div>
-              <div className="eyebrow text-crimson">Resource library</div>
-              <h2 className="mt-3 font-instrument text-4xl tracking-tight sm:text-5xl">
-                Find what you need.
-              </h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
-                Filter by the question you are trying to answer, not by what the
-                algorithm thinks will keep you scrolling.
-              </p>
-            </div>
-
-            <div>
-              <label className="block">
-                <span className="sr-only">Search resources</span>
-                <div className="flex items-center gap-3 rounded-2xl border border-line bg-paper px-5 py-4 focus-within:border-crimson">
-                  <span aria-hidden className="font-mono text-sm text-muted">
-                    /
-                  </span>
-                  <input
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Search courses, topics, or sources"
-                    className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-muted"
-                  />
-                  {query && (
-                    <button
-                      type="button"
-                      onClick={() => setQuery("")}
-                      className="text-xs font-semibold uppercase tracking-wider text-muted hover:text-ink"
-                    >
-                      Clear
-                    </button>
-                  )}
+          {PATHS.map((path, index) => {
+            const active = activePath === index;
+            return (
+              <button
+                key={path.label}
+                type="button"
+                onClick={() => choosePath(index)}
+                aria-pressed={active}
+                className={`hairline-card group rounded-2xl p-6 text-left transition-all hover:-translate-y-1 ${
+                  active ? "border-crimson/70 bg-paper-3" : ""
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`eyebrow ${path.accent}`}>{path.label}</span>
+                  <span className="font-mono text-xs text-muted">0{index + 1}</span>
                 </div>
-              </label>
+                <h2 className="mt-8 font-instrument text-2xl">{path.title}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {path.description}
+                </p>
+                <div className="mt-5 flex items-center justify-between text-xs">
+                  <span className="text-ink-soft">{path.time}</span>
+                  <span className={active ? "text-crimson" : "text-muted"}>
+                    {active ? "Selected" : "View →"}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
 
-              <div className="mt-5 space-y-4">
-                <FilterRow label="Topic" options={topics} value={topic} onChange={setTopic} />
-                <FilterRow label="Format" options={types} value={type} onChange={setType} />
-                <FilterRow label="Level" options={levels} value={level} onChange={setLevel} />
-              </div>
+        <div
+          id="selected-path"
+          className="scroll-mt-24 mt-6 overflow-hidden rounded-3xl border border-line bg-paper-2"
+        >
+          <div className="grid gap-5 border-b border-line px-6 py-7 lg:grid-cols-[0.72fr_1.28fr] sm:px-8">
+            <div>
+              <div className={`eyebrow ${selectedPath.accent}`}>Selected path</div>
+              <h2 className="mt-2 font-instrument text-3xl">{selectedPath.title}</h2>
             </div>
-          </div>
-
-          <div className="mt-12 flex items-center justify-between border-b border-line pb-4">
-            <p className="text-xs uppercase tracking-[0.15em] text-muted">
-              {visible.length} {visible.length === 1 ? "resource" : "resources"}
+            <p className="max-w-2xl text-sm leading-relaxed text-ink-soft lg:self-end">
+              {selectedPath.outcome}
             </p>
-            {hasFilters && (
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="text-xs font-semibold text-crimson hover:text-ink"
-              >
-                Reset filters
-              </button>
-            )}
           </div>
 
-          {visible.length === 0 ? (
-            <div className="rounded-b-3xl border-x border-b border-dashed border-line px-6 py-20 text-center">
-              <p className="font-instrument text-2xl">No exact match.</p>
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="mt-3 text-sm font-semibold text-crimson"
-              >
-                Clear the filters and keep exploring
-              </button>
-            </div>
-          ) : (
-            <div className="grid gap-px overflow-hidden rounded-b-3xl border-x border-b border-line bg-line md:grid-cols-2">
-              {visible.map((resource, index) => (
-                <a
-                  key={resource.id}
-                  href={resource.link || "/learn"}
-                  target={resource.link ? "_blank" : undefined}
-                  rel={resource.link ? "noopener noreferrer" : undefined}
-                  className="group flex min-h-72 flex-col bg-paper p-6 transition-colors hover:bg-paper-3 sm:p-7"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex flex-wrap gap-2">
-                      {resource.type && (
-                        <span className="rounded-full bg-crimson-soft px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-crimson">
-                          {resource.type}
-                        </span>
-                      )}
-                      {resource.level && (
-                        <span className="rounded-full border border-line px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted">
-                          {resource.level}
-                        </span>
-                      )}
-                    </div>
-                    <span className="font-mono text-xs text-muted">
+          {pathResources.length > 0 ? (
+            <ol className="divide-y divide-line">
+              {pathResources.map((resource, index) => (
+                <li key={resource.id}>
+                  <a
+                    href={resource.link || "/learn"}
+                    target={resource.link ? "_blank" : undefined}
+                    rel={resource.link ? "noopener noreferrer" : undefined}
+                    className="group grid gap-3 px-6 py-5 transition-colors hover:bg-paper-3 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center sm:px-8"
+                  >
+                    <span className="font-mono text-xs text-crimson">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                  </div>
-                  <h3 className="mt-10 max-w-md font-instrument text-2xl leading-tight group-hover:text-crimson">
-                    {resource.name}
-                  </h3>
-                  {resource.source && (
-                    <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-muted">
-                      {resource.source}
-                    </p>
-                  )}
-                  {resource.description && (
-                    <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-                      {resource.description}
-                    </p>
-                  )}
-                  <div className="mt-auto flex items-end justify-between gap-4 pt-8">
-                    <div className="flex flex-wrap gap-1.5">
-                      {resource.topics.map((resourceTopic) => (
-                        <span
-                          key={resourceTopic}
-                          className="text-[11px] text-muted before:mr-1 before:text-line before:content-['#']"
-                        >
-                          {resourceTopic}
-                        </span>
-                      ))}
+                    <div>
+                      <h3 className="font-instrument text-xl group-hover:text-crimson">
+                        {resource.name}
+                      </h3>
+                      <p className="mt-1 text-sm text-muted">
+                        {[resource.source, resource.type, resource.level]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
                     </div>
-                    <span className="text-lg text-ink-soft transition-transform group-hover:translate-x-1">
-                      ↗
-                    </span>
-                  </div>
-                </a>
+                    <span className="hidden text-sm text-ink-soft sm:block">Open ↗</span>
+                  </a>
+                </li>
               ))}
-            </div>
+            </ol>
+          ) : (
+            <p className="px-8 py-10 text-sm text-muted">
+              This path is being refreshed. Check back soon.
+            </p>
           )}
         </div>
       </section>
 
       {podcasts.length > 0 && (
-        <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
-          <div className="grid gap-10 lg:grid-cols-[0.65fr_1.35fr]">
+        <section className="border-t border-line bg-paper-2/55">
+          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.65fr_1.35fr]">
             <div>
               <div className="eyebrow text-electric">Listen on the go</div>
-              <h2 className="mt-3 font-instrument text-4xl tracking-tight sm:text-5xl">
-                Keep the signal. Skip the feed.
+              <h2 className="mt-3 font-instrument text-4xl tracking-tight">
+                Three shows worth your time.
               </h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
-                Five shows that reliably make the commute, workout, or walk across
-                campus more interesting.
-              </p>
             </div>
             <div className="divide-y divide-line border-y border-line">
-              {podcasts.map((podcast, index) => (
+              {podcasts.slice(0, 3).map((podcast, index) => (
                 <a
                   key={podcast.id}
                   href={podcast.link || "/learn"}
@@ -285,14 +188,9 @@ export function LearningLibrary({
                     <h3 className="font-instrument text-xl group-hover:text-electric">
                       {podcast.name}
                     </h3>
-                    <p className="mt-1 text-sm text-muted">
-                      {podcast.hostGuest}
-                      {podcast.description ? ` · ${podcast.description}` : ""}
-                    </p>
+                    <p className="mt-1 text-sm text-muted">{podcast.hostGuest}</p>
                   </div>
-                  <span className="hidden text-ink-soft transition-transform group-hover:translate-x-1 sm:block">
-                    ↗
-                  </span>
+                  <span className="hidden text-ink-soft sm:block">↗</span>
                 </a>
               ))}
             </div>
@@ -300,42 +198,5 @@ export function LearningLibrary({
         </section>
       )}
     </>
-  );
-}
-
-function FilterRow({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string;
-  options: string[];
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div className="flex items-start gap-4">
-      <span className="w-12 shrink-0 pt-2 text-[10px] font-bold uppercase tracking-wider text-muted">
-        {label}
-      </span>
-      <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
-        {options.map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => onChange(option)}
-            aria-pressed={value === option}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-              value === option
-                ? "bg-ink text-paper"
-                : "border border-line text-muted hover:border-muted hover:text-ink"
-            }`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-    </div>
   );
 }

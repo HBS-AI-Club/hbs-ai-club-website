@@ -6,7 +6,7 @@ export const revalidate = 60;
 export const metadata = {
   title: "Learn",
   description:
-    "The HBS AI Club field guide: a curated, filterable library for learning AI without the noise.",
+    "The HBS AI Club field guide: guided learning paths and a curated library for busy MBAs.",
 };
 
 export default async function LearnPage() {
@@ -14,7 +14,7 @@ export default async function LearnPage() {
 
   return (
     <div>
-      <header className="relative overflow-hidden border-b border-line">
+      <header className="page-hero relative overflow-hidden border-b border-line">
         <div className="editorial-grid absolute inset-0 opacity-25" />
         <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
           <div className="eyebrow text-electric">The HBS AI field guide</div>

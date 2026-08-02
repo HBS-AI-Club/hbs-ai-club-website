@@ -5,50 +5,46 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const LINKS = [
+  { href: "/learn", label: "Learn" },
   { href: "/speakers", label: "Speakers" },
   { href: "/leadership", label: "Leadership" },
-  { href: "/learn", label: "Learn" },
   { href: "/sponsorship", label: "Sponsorship" },
 ];
 
 export function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const isHome = pathname === "/";
-  // On home, the nav floats over the dark hero until the user scrolls.
-  const onDark = isHome && !scrolled && !open;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   // The homepage has its own glassmorphic nav inside the video hero.
   if (isHome) return null;
 
   return (
-    <header
-      className={`sticky top-0 z-[80] transition-colors duration-300 ${
-        onDark
-          ? "border-b border-white/5 bg-ink"
-          : "border-b border-line bg-paper/85 backdrop-blur-md"
-      }`}
-    >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="grid h-8 w-8 place-items-center rounded-[9px] bg-crimson text-[12px] font-bold text-white">
-            AI
-          </span>
-          <span className="font-instrument text-[1.55rem] tracking-tight text-ink">
-            HBS AI Club
-          </span>
+    <header className="sticky top-0 z-[80] border-b border-white/10 bg-[#14090d]/92 backdrop-blur-xl">
+      <nav
+        aria-label="Primary navigation"
+        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-8"
+      >
+        <Link
+          href="/"
+          className="font-instrument text-3xl tracking-tight text-white"
+          onClick={() => setOpen(false)}
+        >
+          HBS AI Club
         </Link>
 
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden items-center gap-8 md:flex">
           {LINKS.map((l) => {
             const active = pathname === l.href || pathname.startsWith(l.href + "/");
             return (
@@ -56,13 +52,7 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 className={`text-sm transition-colors ${
-                  onDark
-                    ? `[text-shadow:0_1px_12px_rgba(0,0,0,0.5)] ${
-                        active ? "text-white" : "text-paper/90 hover:text-white"
-                      }`
-                    : active
-                      ? "text-crimson"
-                      : "text-ink-soft hover:text-ink"
+                  active ? "text-white" : "text-white/65 hover:text-white"
                 }`}
               >
                 {l.label}
@@ -71,34 +61,35 @@ export function Nav() {
           })}
           <Link
             href="/join"
-            className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-              onDark
-                ? "bg-paper text-ink hover:bg-crimson hover:text-white"
-                : "bg-crimson text-white hover:bg-crimson-dark"
-            }`}
+            className="liquid-glass rounded-full px-6 py-2.5 text-sm font-medium text-white hover:scale-[1.03]"
           >
-            Join
+            Join the Club
           </Link>
         </div>
 
         <button
-          className={`rounded-full border border-line px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors md:hidden ${onDark ? "text-paper" : "text-ink-soft"}`}
+          className="rounded-full border border-white/20 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white transition-colors md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="site-mobile-menu"
         >
           {open ? "Close" : "Menu"}
         </button>
       </nav>
 
       {open && (
-        <div className="border-t border-line bg-paper md:hidden">
+        <div
+          id="site-mobile-menu"
+          className="border-t border-white/10 bg-[#14090d]/96 md:hidden"
+        >
           <div className="mx-auto flex max-w-6xl flex-col px-5 py-2">
             {LINKS.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="py-2.5 text-sm text-ink-soft"
+                className="py-2.5 text-sm text-white/75 hover:text-white"
               >
                 {l.label}
               </Link>
@@ -106,9 +97,9 @@ export function Nav() {
             <Link
               href="/join"
               onClick={() => setOpen(false)}
-              className="mt-1 mb-2 w-fit rounded-full bg-crimson px-4 py-1.5 text-sm font-medium text-white"
+              className="liquid-glass mt-1 mb-2 w-fit rounded-full px-4 py-1.5 text-sm font-medium text-white"
             >
-              Join
+              Join the Club
             </Link>
           </div>
         </div>

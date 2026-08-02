@@ -35,7 +35,7 @@ The site auto-deploys from `main`. The only required environment variable is `NO
 
 ## Structure
 
-- `app/` — routes (home, speakers, leadership, learn, join, plus speaker `[slug]` detail pages)
-- `components/` — UI (cinematic hero, navigation, learning filters, and profile cards)
+- `app/` — routes (home, speakers, leadership, learn, sponsorship, join, plus speaker `[slug]` detail pages)
+- `components/` — UI (cinematic hero, navigation, guided learning paths, inquiry flow, and profile cards)
 - `lib/notion.ts` — the Notion data layer (database IDs live here)
 - `lib/format.ts` — shared display helpers
