@@ -1,45 +1,44 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Inter, Newsreader } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/footer";
+import { Nav } from "@/components/nav";
 
 const sans = Inter({
-  variable: "--font-sans",
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
+const display = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: "400",
+  weight: "variable",
   style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "https://hbs-ai-club-website.vercel.app"
-  ),
+  metadataBase: new URL("https://www.hbsai.club"),
   title: {
     default: "HBS AI Club",
     template: "%s · HBS AI Club",
   },
   description:
-    "The Harvard Business School Artificial Intelligence Club—technical learning, candid conversations, and community at the frontier of AI and business.",
+    "Harvard Business School’s student club for learning and building with AI.",
   openGraph: {
     title: "HBS AI Club",
     description:
-      "Where business meets artificial intelligence. Technical learning, candid conversations, and community at Harvard Business School.",
+      "The AI community at Harvard Business School.",
     siteName: "HBS AI Club",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "HBS AI Club" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "HBS AI Club",
-    description: "Where business meets artificial intelligence—at Harvard Business School.",
+    description: "The AI community at Harvard Business School.",
+    images: ["/og.png"],
   },
 };
 
@@ -50,7 +49,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${sans.variable} ${instrument.variable} h-full antialiased`}
+      className={`${sans.variable} ${display.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <a
@@ -59,6 +58,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <Nav />
         <main id="main-content" className="flex-1">
           {children}
         </main>

@@ -19,14 +19,16 @@ export function Avatar({
         alt={name}
         width={size}
         height={size}
-        className="rounded-full object-cover"
+        loading="lazy"
+        decoding="async"
+        className="shrink-0 rounded-full border border-white/10 object-cover"
         style={{ width: size, height: size }}
       />
     );
   }
   return (
     <div
-      className="grid shrink-0 place-items-center rounded-full font-display font-semibold text-crimson"
+      className="grid shrink-0 place-items-center rounded-full border border-crimson/15 font-display font-semibold text-crimson"
       style={{
         width: size,
         height: size,

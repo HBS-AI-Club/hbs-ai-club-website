@@ -3,33 +3,76 @@
 import { useMemo, useState } from "react";
 import type { Podcast, Resource } from "@/lib/notion";
 
+const LOGO_OVERRIDES: Record<string, string> = {
+  "karpathy.ai": "https://karpathy.ai/assets/me_new.jpg",
+  "lennyspodcast.com":
+    "https://substack-post-media.s3.amazonaws.com/public/images/1e8acd24-ffed-43b3-af00-52f14a10b272_2048x2048.png",
+};
+
+function SourceLogo({ link, name }: { link: string; name: string }) {
+  const [failed, setFailed] = useState(false);
+  let domain = "";
+
+  try {
+    domain = new URL(link).hostname.replace(/^www\./, "");
+  } catch {
+    domain = "";
+  }
+
+  const initial = name.replace(/^the\s+/i, "").charAt(0).toUpperCase() || "AI";
+  const logoUrl =
+    LOGO_OVERRIDES[domain] ||
+    (domain
+      ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`
+      : "");
+
+  return (
+    <div
+      className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden text-lg font-bold text-crimson"
+      aria-hidden="true"
+    >
+      {logoUrl && !failed ? (
+        // Source favicons are loaded from Google's public favicon endpoint.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={logoUrl}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-contain"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <span className="grid h-16 w-16 place-items-center rounded-full bg-crimson-soft">
+          {initial}
+        </span>
+      )}
+    </div>
+  );
+}
+
 const PATHS = [
   {
-    label: "New to AI",
-    title: "Understand the landscape",
-    description: "Build a useful mental model before going deeper.",
-    time: "45 minutes",
-    outcome: "Understand the major capabilities, players, and business questions.",
+    label: "Learn the basics",
+    title: "Understand AI",
+    description: "A short introduction to how today’s AI tools work.",
+    time: "About 45 min",
     resourceNames: ["The AI Canon", "The Batch", "Building with Claude — Docs"],
     fallbackTopics: ["AI Strategy"],
-    accent: "text-crimson",
   },
   {
-    label: "Product & strategy",
-    title: "Make better AI bets",
-    description: "Connect technical shifts to products, teams, and defensibility.",
-    time: "60 minutes",
-    outcome: "Ask sharper questions about an AI product, company, or operating plan.",
+    label: "Use AI at work",
+    title: "See where AI helps",
+    description: "Learn how teams use AI in products and daily work.",
+    time: "About 60 min",
     resourceNames: ["The AI Canon", "Chip Huyen — Blog & AI Engineering", "The Batch"],
     fallbackTopics: ["AI Strategy", "Tools"],
-    accent: "text-electric",
   },
   {
-    label: "Ready to build",
-    title: "Go from prompt to prototype",
-    description: "Use practical guides to create a working first project.",
+    label: "Build something",
+    title: "Make a simple prototype",
+    description: "Follow a few guides and create a first project.",
     time: "2–3 hours",
-    outcome: "Build a prototype and understand how modern AI applications fit together.",
     resourceNames: [
       "DeepLearning.AI Short Courses",
       "OpenAI Cookbook",
@@ -37,7 +80,6 @@ const PATHS = [
       "Neural Networks: Zero to Hero",
     ],
     fallbackTopics: ["Agents", "Prompting", "ML Fundamentals"],
-    accent: "text-[#f2bd74]",
   },
 ] as const;
 
@@ -56,92 +98,82 @@ export function LearningLibrary({
       .map((name) => resources.find((resource) => resource.name === name))
       .filter((resource): resource is Resource => Boolean(resource));
 
-    if (exact.length >= 2) return exact;
+    if (exact.length >= 2) return exact.slice(0, 4);
 
     return resources
       .filter((resource) =>
-        resource.topics.some((resourceTopic) =>
-          selectedPath.fallbackTopics.some((pathTopic) => resourceTopic === pathTopic)
+        resource.topics.some((topic) =>
+          selectedPath.fallbackTopics.some((pathTopic) => topic === pathTopic)
         )
       )
       .slice(0, 4);
   }, [resources, selectedPath]);
 
-  function choosePath(index: number) {
-    setActivePath(index);
-    requestAnimationFrame(() => {
-      document.getElementById("selected-path")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
-  }
-
   return (
     <>
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-        <div className="eyebrow text-muted">Choose one path</div>
-        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        <div
+          role="tablist"
+          aria-label="Learning goals"
+          className="no-scrollbar flex gap-2 overflow-x-auto border-b border-line pb-4"
+        >
           {PATHS.map((path, index) => {
-            const active = activePath === index;
+            const active = index === activePath;
             return (
               <button
                 key={path.label}
                 type="button"
-                onClick={() => choosePath(index)}
-                aria-pressed={active}
-                className={`hairline-card group rounded-2xl p-6 text-left transition-all hover:-translate-y-1 ${
-                  active ? "border-crimson/70 bg-paper-3" : ""
+                role="tab"
+                id={`path-tab-${index}`}
+                aria-selected={active}
+                aria-controls="learning-path-panel"
+                onClick={() => setActivePath(index)}
+                className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
+                  active
+                    ? "bg-crimson text-white"
+                    : "border border-line text-muted hover:border-muted hover:text-white"
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <span className={`eyebrow ${path.accent}`}>{path.label}</span>
-                  <span className="font-mono text-xs text-muted">0{index + 1}</span>
-                </div>
-                <h2 className="mt-8 font-instrument text-2xl">{path.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  {path.description}
-                </p>
-                <div className="mt-5 flex items-center justify-between text-xs">
-                  <span className="text-ink-soft">{path.time}</span>
-                  <span className={active ? "text-crimson" : "text-muted"}>
-                    {active ? "Selected" : "View →"}
-                  </span>
-                </div>
+                {path.label}
               </button>
             );
           })}
         </div>
 
         <div
-          id="selected-path"
-          className="scroll-mt-24 mt-6 overflow-hidden rounded-3xl border border-line bg-paper-2"
+          id="learning-path-panel"
+          role="tabpanel"
+          aria-labelledby={`path-tab-${activePath}`}
+          className="grid gap-10 py-12 lg:grid-cols-[0.58fr_1.42fr] lg:gap-16"
         >
-          <div className="grid gap-5 border-b border-line px-6 py-7 lg:grid-cols-[0.72fr_1.28fr] sm:px-8">
-            <div>
-              <div className={`eyebrow ${selectedPath.accent}`}>Selected path</div>
-              <h2 className="mt-2 font-instrument text-3xl">{selectedPath.title}</h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-relaxed text-ink-soft lg:self-end">
-              {selectedPath.outcome}
+          <div>
+            <div className="eyebrow text-crimson">{selectedPath.time}</div>
+            <h2 className="mt-4 max-w-md font-display text-4xl leading-tight tracking-[-0.025em] sm:text-5xl">
+              {selectedPath.title}
+            </h2>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted">
+              {selectedPath.description}
             </p>
           </div>
 
           {pathResources.length > 0 ? (
-            <ol className="divide-y divide-line">
-              {pathResources.map((resource, index) => (
+            <ol className="grid gap-4 sm:grid-cols-2">
+              {pathResources.map((resource) => (
                 <li key={resource.id}>
                   <a
                     href={resource.link || "/learn"}
                     target={resource.link ? "_blank" : undefined}
                     rel={resource.link ? "noopener noreferrer" : undefined}
-                    className="group grid gap-3 px-6 py-5 transition-colors hover:bg-paper-3 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center sm:px-8"
+                    className="group flex min-h-52 h-full flex-col rounded-2xl border border-line bg-paper-2 p-6 transition-colors hover:border-crimson/40 hover:bg-paper-3"
                   >
-                    <span className="font-mono text-xs text-crimson">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h3 className="font-instrument text-xl group-hover:text-crimson">
+                    <div className="flex items-start justify-between gap-5">
+                      <SourceLogo link={resource.link} name={resource.source || resource.name} />
+                      <span className="text-sm text-muted transition-colors group-hover:text-crimson">
+                        ↗
+                      </span>
+                    </div>
+                    <div className="mt-auto pt-8">
+                      <h3 className="font-display text-2xl leading-tight text-ink group-hover:text-crimson">
                         {resource.name}
                       </h3>
                       <p className="mt-1 text-sm text-muted">
@@ -150,47 +182,46 @@ export function LearningLibrary({
                           .join(" · ")}
                       </p>
                     </div>
-                    <span className="hidden text-sm text-ink-soft sm:block">Open ↗</span>
                   </a>
                 </li>
               ))}
             </ol>
           ) : (
-            <p className="px-8 py-10 text-sm text-muted">
+            <div className="border-y border-line py-10 text-sm text-muted">
               This path is being refreshed. Check back soon.
-            </p>
+            </div>
           )}
         </div>
       </section>
 
       {podcasts.length > 0 && (
-        <section className="border-t border-line bg-paper-2/55">
-          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.65fr_1.35fr]">
+        <section className="border-t border-line bg-paper-2/50">
+          <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
             <div>
-              <div className="eyebrow text-electric">Listen on the go</div>
-              <h2 className="mt-3 font-instrument text-4xl tracking-tight">
-                Three shows worth your time.
+              <div className="eyebrow text-crimson">Listen</div>
+              <h2 className="mt-4 font-display text-4xl tracking-[-0.025em]">
+                Three podcasts we recommend.
               </h2>
             </div>
-            <div className="divide-y divide-line border-y border-line">
-              {podcasts.slice(0, 3).map((podcast, index) => (
+            <div className="mt-9 grid gap-4 md:grid-cols-3">
+              {podcasts.slice(0, 3).map((podcast) => (
                 <a
                   key={podcast.id}
                   href={podcast.link || "/learn"}
                   target={podcast.link ? "_blank" : undefined}
                   rel={podcast.link ? "noopener noreferrer" : undefined}
-                  className="group grid gap-3 py-5 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center sm:gap-5"
+                  className="group flex min-h-52 flex-col rounded-2xl border border-line bg-paper-2 p-6 transition-colors hover:border-crimson/40 hover:bg-paper-3"
                 >
-                  <span className="font-mono text-xs text-muted">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="font-instrument text-xl group-hover:text-electric">
+                  <div className="flex items-start justify-between gap-5">
+                    <SourceLogo link={podcast.link} name={podcast.name} />
+                    <span className="text-sm text-muted transition-colors group-hover:text-crimson">↗</span>
+                  </div>
+                  <div className="mt-auto pt-8">
+                    <h3 className="font-display text-2xl leading-tight group-hover:text-crimson">
                       {podcast.name}
                     </h3>
-                    <p className="mt-1 text-sm text-muted">{podcast.hostGuest}</p>
+                    <p className="mt-2 text-sm text-muted">{podcast.hostGuest}</p>
                   </div>
-                  <span className="hidden text-ink-soft sm:block">↗</span>
                 </a>
               ))}
             </div>

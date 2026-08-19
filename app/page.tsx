@@ -1,154 +1,119 @@
 import Link from "next/link";
-import { getLeadership, getSpeakers } from "@/lib/notion";
+import { getSpeakers } from "@/lib/notion";
 import { Hero } from "@/components/hero";
 import { Reveal } from "@/components/reveal";
-import { Avatar } from "@/components/avatar";
+import { SpeakerCard } from "@/components/speaker-card";
 
 export const revalidate = 60;
 
-const PILLARS = [
+const PATHS = [
   {
-    title: "Fireside Chats",
-    description:
-      "Candid conversations with the operators, founders, and investors shaping AI—from OpenAI and Sierra to GSV and SemiAnalysis.",
-    color: "#ef6f81",
+    title: "Learn",
+    description: "Use our short guides.",
+    href: "/learn",
   },
   {
-    title: "Technical Learning",
-    description:
-      "Hands-on sessions that take you from LLM fundamentals to building and evaluating agents—no engineering background required.",
-    color: "#6fb2e6",
+    title: "Hear from speakers",
+    description: "Meet people who work with AI.",
+    href: "/speakers",
   },
   {
-    title: "Community",
-    description:
-      "Dinners, socials, and project show-and-tells that turn classmates into collaborators and friends.",
-    color: "#dda45f",
+    title: "Meet classmates",
+    description: "Join the HBS AI community.",
+    href: "/join",
   },
 ];
 
 export default async function Home() {
-  const [speakers, leaders] = await Promise.all([
-    getSpeakers(),
-    getLeadership(),
-  ]);
-
-  const featured = speakers.filter((speaker) => speaker.featured).slice(0, 6);
-  const currentLeaders = leaders.filter(
-    (leader) => leader.tenure === "Current Board"
-  );
-  const stats = [
-    { number: "400+", label: "club members" },
-    { number: "30+", label: "programs last year" },
-    { number: `${speakers.length}`, label: "guest speakers" },
-    { number: `${currentLeaders.length || leaders.length}`, label: "current board members" },
-  ];
+  const speakers = await getSpeakers();
+  const featured = speakers.filter((speaker) => speaker.featured).slice(0, 3);
 
   return (
     <div>
       <Hero />
 
-      <section className="mx-auto max-w-6xl px-5 py-14">
+      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
         <Reveal>
-          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.label} className="bg-paper px-5 py-6">
-                <div className="font-display text-3xl text-crimson sm:text-4xl">
-                  {stat.number}
-                </div>
-                <div className="mt-1 text-xs uppercase tracking-wide text-muted">
-                  {stat.label}
-                </div>
+          <div className="grid gap-10 border-b border-line pb-16 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
+            <h2 className="max-w-4xl font-display text-4xl leading-[1.03] tracking-[-0.03em] sm:text-6xl">
+              What members can do.
+            </h2>
+            <div className="lg:justify-self-end">
+              <p className="max-w-md text-base leading-relaxed text-ink-soft">
+                Learn, hear from speakers, and meet classmates.
+              </p>
+              <div className="mt-6 flex gap-6 text-sm text-muted">
+                <span><strong className="text-ink">400+</strong> members</span>
+                <span><strong className="text-ink">30+</strong> programs</span>
               </div>
-            ))}
+            </div>
           </div>
         </Reveal>
-      </section>
 
-      <section className="mx-auto max-w-5xl px-5 py-16">
-        <Reveal>
-          <div className="eyebrow mb-5 text-crimson">What membership looks like</div>
-          <p className="font-display text-3xl leading-[1.15] tracking-tight sm:text-5xl">
-            We bring the frontier to campus—and put{" "}
-            <span className="italic text-crimson">students</span> at the center of it.
-          </p>
-        </Reveal>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 pb-20">
-        <div className="grid gap-8 md:grid-cols-3">
-          {PILLARS.map((pillar, index) => (
-            <Reveal key={pillar.title} delay={index * 90}>
-              <span
-                className="block h-1 w-10 rounded-full"
-                style={{ background: pillar.color }}
-              />
-              <h3 className="mt-4 font-display text-xl">{pillar.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                {pillar.description}
-              </p>
+        <div className="grid lg:grid-cols-3">
+          {PATHS.map((path, index) => (
+            <Reveal key={path.title} delay={index * 80}>
+              <Link
+                href={path.href}
+                className="group flex items-center justify-between gap-6 border-b border-line py-9 lg:block lg:border-b-0 lg:border-r lg:px-8 lg:py-12 first:lg:pl-0 last:lg:border-r-0 last:lg:pr-0"
+              >
+                <div>
+                  <h3 className="font-display text-3xl tracking-[-0.02em]">
+                    {path.title}
+                  </h3>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
+                    {path.description}
+                  </p>
+                </div>
+                <span className="shrink-0 text-sm text-muted transition-transform group-hover:translate-x-1 group-hover:text-crimson lg:mt-8 lg:inline-block">
+                  →
+                </span>
+              </Link>
             </Reveal>
           ))}
         </div>
       </section>
 
       {featured.length > 0 && (
-        <section className="mx-auto max-w-6xl px-5 py-20">
-          <Reveal>
-            <div className="flex items-end justify-between">
-              <div>
-                <div className="eyebrow text-crimson">On our stage</div>
-                <h2 className="mt-2 font-display text-3xl">Past speakers</h2>
-              </div>
-              <Link href="/speakers" className="text-sm font-medium text-crimson hover:underline">
-                All speakers →
-              </Link>
-            </div>
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((speaker) => (
-                <Link
-                  key={speaker.id}
-                  href={`/speakers/${speaker.slug}`}
-                  className="group flex items-center gap-4 bg-paper px-6 py-5 transition-colors hover:bg-paper-2"
-                >
-                  <Avatar name={speaker.name} src={speaker.headshot} size={44} />
-                  <div className="min-w-0">
-                    <div className="font-display text-lg leading-tight group-hover:text-crimson">
-                      {speaker.name}
-                    </div>
-                    <div className="truncate text-sm text-muted">
-                      {speaker.title}
-                      {speaker.company ? ` · ${speaker.company}` : ""}
-                    </div>
-                  </div>
+        <section className="border-y border-line bg-paper-2/50">
+          <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+            <Reveal>
+              <div className="flex items-end justify-between gap-6">
+                <div>
+                  <div className="eyebrow text-crimson">Past speakers</div>
+                  <h2 className="mt-3 font-display text-4xl tracking-[-0.025em]">
+                    People who have joined us.
+                  </h2>
+                </div>
+                <Link href="/speakers" className="hidden text-sm font-semibold text-ink-soft hover:text-crimson sm:block">
+                  View all →
                 </Link>
+              </div>
+            </Reveal>
+            <div className="mt-9 grid gap-4 md:grid-cols-3">
+              {featured.map((speaker, index) => (
+                <Reveal key={speaker.id} delay={index * 70}>
+                  <SpeakerCard speaker={speaker} />
+                </Reveal>
               ))}
             </div>
-          </Reveal>
+          </div>
         </section>
       )}
 
-      <section className="mx-auto max-w-6xl px-5 pb-24">
+      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl border border-line bg-paper-2 px-8 py-14 text-ink sm:px-14">
-            <div className="hero-grid-dark absolute inset-0 opacity-40" />
-            <div className="relative max-w-2xl">
-              <h2 className="font-display text-3xl leading-tight sm:text-4xl">
-                Come build the future of AI with us.
-              </h2>
-              <p className="mt-3 text-muted">
-                Open to every HBS student—technical or not. Join the community and
-                learn alongside classmates.
-              </p>
-              <Link
-                href="/join"
-                className="mt-6 inline-block rounded-full bg-crimson px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-crimson-dark"
-              >
-                Join the club
-              </Link>
+          <div className="flex flex-col gap-8 rounded-3xl border border-line bg-paper-2 px-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-12 sm:py-12">
+            <div>
+              <h2 className="font-display text-4xl tracking-[-0.025em]">Ready to join?</h2>
+              <p className="mt-2 text-sm text-muted">Open to every HBS student and registered partner.</p>
             </div>
+            <Link
+              href="/join"
+              className="w-fit rounded-full bg-crimson px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-crimson-dark"
+            >
+              Join HBS AI Club
+            </Link>
           </div>
         </Reveal>
       </section>

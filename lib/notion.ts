@@ -145,11 +145,6 @@ export async function getSpeakers(): Promise<Speaker[]> {
   );
 }
 
-export async function getSpeakerBySlug(slug: string): Promise<Speaker | null> {
-  const speakers = await getSpeakers();
-  return speakers.find((s) => s.slug === slug) ?? null;
-}
-
 export async function getLeadership(): Promise<Leader[]> {
   const rows = await notionQuery(DB.leadership, { filter: PUBLISHED });
   return rows
