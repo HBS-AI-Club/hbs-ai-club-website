@@ -1,6 +1,7 @@
 import { getSpeakers } from "@/lib/notion";
 import { SpeakerCard } from "@/components/speaker-card";
 import { PageIntro } from "@/components/page-intro";
+import { Reveal } from "@/components/reveal";
 
 export const revalidate = 60;
 
@@ -27,12 +28,21 @@ export default async function SpeakersPage() {
           </div>
         ) : (
           <>
-            <div className="flex justify-end border-b border-line pb-4">
-              <span className="text-sm text-muted">{speakers.length} profiles</span>
-            </div>
+            <Reveal variant="slide-right">
+              <div className="flex justify-end border-b border-line pb-4">
+                <span className="text-sm text-muted">{speakers.length} profiles</span>
+              </div>
+            </Reveal>
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {speakers.map((speaker) => (
-                <SpeakerCard key={speaker.id} speaker={speaker} />
+              {speakers.map((speaker, index) => (
+                <Reveal
+                  key={speaker.id}
+                  delay={(index % 3) * 70}
+                  className="h-full"
+                  variant={index % 2 === 0 ? "scale" : "rise"}
+                >
+                  <SpeakerCard speaker={speaker} />
+                </Reveal>
               ))}
             </div>
           </>

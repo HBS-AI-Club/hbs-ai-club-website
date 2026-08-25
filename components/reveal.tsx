@@ -2,15 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Wraps children and fades/slides them up when they scroll into view. */
+export type RevealVariant =
+  | "rise"
+  | "slide-left"
+  | "slide-right"
+  | "scale"
+  | "focus";
+
+/** Reveals content once as it enters the viewport. */
 export function Reveal({
   children,
   delay = 0,
   className = "",
+  variant = "rise",
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  variant?: RevealVariant;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -34,8 +43,8 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
-      style={{ ["--reveal-delay"]: `${delay}ms` } as React.CSSProperties}
+      className={`reveal reveal-${variant} ${visible ? "is-visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
     </div>

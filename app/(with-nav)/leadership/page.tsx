@@ -1,6 +1,7 @@
 import { getLeadership } from "@/lib/notion";
 import { LeaderCard } from "@/components/leader-card";
 import { PageIntro } from "@/components/page-intro";
+import { Reveal } from "@/components/reveal";
 
 export const revalidate = 60;
 
@@ -34,15 +35,19 @@ export default async function LeadershipPage() {
         ) : (
           <>
             <section>
-              <div className="flex items-end justify-between border-b border-line pb-4">
-                <div>
-                  <div className="eyebrow text-crimson">Current board</div>
-                  <h2 className="mt-2 font-display text-3xl">2026–27</h2>
+              <Reveal variant="slide-left">
+                <div className="flex items-end justify-between border-b border-line pb-4">
+                  <div>
+                    <div className="eyebrow text-crimson">Current board</div>
+                    <h2 className="mt-2 font-display text-3xl">2026–27</h2>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
               <div className="mt-8 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-                {currentBoard.map((leader) => (
-                  <LeaderCard key={leader.id} leader={leader} />
+                {currentBoard.map((leader, index) => (
+                  <Reveal key={leader.id} delay={(index % 4) * 70} variant="scale">
+                    <LeaderCard leader={leader} />
+                  </Reveal>
                 ))}
               </div>
             </section>
@@ -55,8 +60,14 @@ export default async function LeadershipPage() {
                     <h2 className="mt-2 font-display text-3xl">Past leadership</h2>
                   </div>
                   <div className="grid gap-x-10 sm:grid-cols-2">
-                    {past.map((leader) => (
-                      <LeaderCard key={leader.id} leader={leader} compact />
+                    {past.map((leader, index) => (
+                      <Reveal
+                        key={leader.id}
+                        delay={(index % 2) * 70}
+                        variant="slide-right"
+                      >
+                        <LeaderCard leader={leader} compact />
+                      </Reveal>
                     ))}
                   </div>
                 </div>

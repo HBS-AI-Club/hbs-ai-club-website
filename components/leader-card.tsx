@@ -18,7 +18,7 @@ export function LeaderCard({
 
   if (compact) {
     return (
-      <article className="flex items-center gap-4 border-t border-line py-5">
+      <article className="motion-card flex items-center gap-4 border-t border-line py-5">
         {photo ? (
           <Image
             src={photo}
@@ -55,7 +55,7 @@ export function LeaderCard({
 
   return (
     <article className="group">
-      <div className="relative aspect-square overflow-hidden rounded-2xl border border-line bg-paper-2">
+      <div className="motion-card relative aspect-square overflow-hidden rounded-2xl border border-line bg-paper-2">
         {photo ? (
           <div
             className="absolute transition-opacity duration-300 group-hover:opacity-95"

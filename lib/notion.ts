@@ -6,6 +6,7 @@ import { slugify } from "./format";
 
 const TOKEN = process.env.NOTION_TOKEN;
 const NOTION_VERSION = "2022-06-28";
+const NOTION_DATA_SOURCE_VERSION = "2025-09-03";
 const REVALIDATE = 60; // seconds; page-level ISR also set per route
 
 export const DB = {
@@ -13,6 +14,10 @@ export const DB = {
   leadership: "399d8dc3-9a12-8138-a668-fa51e77f422f",
   podcasts: "399d8dc3-9a12-8117-bd80-db300cb43ce9",
   learning: "399d8dc3-9a12-8117-afd8-fd48efc10ff9",
+} as const;
+
+export const DATA_SOURCE = {
+  membershipLinks: "9f38ad53-0627-4176-87d8-d048e9c28f2b",
 } as const;
 
 type Json = Record<string, unknown>;
@@ -37,6 +42,39 @@ async function notionQuery(dbId: string, body: Json): Promise<any[]> {
     });
     if (!res.ok) {
       throw new Error(`Notion query ${dbId} failed: ${res.status} ${await res.text()}`);
+    }
+    const data: any = await res.json();
+    results.push(...data.results);
+    cursor = data.has_more ? data.next_cursor : undefined;
+  } while (cursor);
+  return results;
+}
+
+async function notionDataSourceQuery(dataSourceId: string, body: Json): Promise<any[]> {
+  if (!TOKEN) {
+    console.warn("NOTION_TOKEN missing — returning empty result set");
+    return [];
+  }
+  const results: any[] = [];
+  let cursor: string | undefined = undefined;
+  do {
+    const res: Response = await fetch(
+      `https://api.notion.com/v1/data_sources/${dataSourceId}/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          "Notion-Version": NOTION_DATA_SOURCE_VERSION,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...body, page_size: 100, start_cursor: cursor }),
+        next: { revalidate: REVALIDATE },
+      }
+    );
+    if (!res.ok) {
+      throw new Error(
+        `Notion data source query ${dataSourceId} failed: ${res.status} ${await res.text()}`
+      );
     }
     const data: any = await res.json();
     results.push(...data.results);
@@ -107,6 +145,14 @@ export interface Podcast {
   date: string | null;
   link: string;
   description: string;
+}
+
+export interface MembershipAction {
+  id: string;
+  name: string;
+  description: string;
+  link: string;
+  order: number;
 }
 
 const PUBLISHED = { property: "Show on Website", checkbox: { equals: true } };
@@ -196,4 +242,21 @@ export async function getPodcasts(): Promise<Podcast[]> {
       description: gRich(p, "Description"),
     };
   });
+}
+
+export async function getMembershipActions(): Promise<MembershipAction[]> {
+  const rows = await notionDataSourceQuery(DATA_SOURCE.membershipLinks, { filter: PUBLISHED });
+  return rows
+    .map((r) => {
+      const p = P(r);
+      return {
+        id: r.id,
+        name: gTitle(p, "Name"),
+        description: gRich(p, "Description"),
+        link: gUrl(p, "Link"),
+        order: gNum(p, "Order") ?? 999,
+      };
+    })
+    .filter((action) => action.name && action.link)
+    .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSpeakers } from "@/lib/notion";
 import { Hero } from "@/components/hero";
 import { Reveal } from "@/components/reveal";
+import type { RevealVariant } from "@/components/reveal";
 import { SpeakerCard } from "@/components/speaker-card";
 
 export const revalidate = 60;
@@ -11,18 +12,26 @@ const PATHS = [
     title: "Learn",
     description: "Use our short guides.",
     href: "/learn",
+    reveal: "slide-left",
   },
   {
     title: "Hear from speakers",
     description: "Meet people who work with AI.",
     href: "/speakers",
+    reveal: "scale",
   },
   {
     title: "Meet classmates",
     description: "Join the HBS AI community.",
     href: "/join",
+    reveal: "slide-right",
   },
-];
+] satisfies Array<{
+  title: string;
+  description: string;
+  href: string;
+  reveal: RevealVariant;
+}>;
 
 export default async function Home() {
   const speakers = await getSpeakers();
@@ -33,7 +42,7 @@ export default async function Home() {
       <Hero />
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
-        <Reveal>
+        <Reveal variant="slide-left">
           <div className="grid gap-10 border-b border-line pb-16 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
             <h2 className="max-w-4xl font-display text-4xl leading-[1.03] tracking-[-0.03em] sm:text-6xl">
               What members can do.
@@ -52,10 +61,10 @@ export default async function Home() {
 
         <div className="grid lg:grid-cols-3">
           {PATHS.map((path, index) => (
-            <Reveal key={path.title} delay={index * 80}>
+            <Reveal key={path.title} delay={index * 80} variant={path.reveal}>
               <Link
                 href={path.href}
-                className="group flex items-center justify-between gap-6 border-b border-line py-9 lg:block lg:border-b-0 lg:border-r lg:px-8 lg:py-12 first:lg:pl-0 last:lg:border-r-0 last:lg:pr-0"
+                className="motion-card group flex items-center justify-between gap-6 border-b border-line py-9 lg:block lg:border-b-0 lg:border-r lg:px-8 lg:py-12 first:lg:pl-0 last:lg:border-r-0 last:lg:pr-0"
               >
                 <div>
                   <h3 className="font-display text-3xl tracking-[-0.02em]">
@@ -77,7 +86,7 @@ export default async function Home() {
       {featured.length > 0 && (
         <section className="border-y border-line bg-paper-2/50">
           <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
-            <Reveal>
+            <Reveal variant="slide-left">
               <div className="flex items-end justify-between gap-6">
                 <div>
                   <div className="eyebrow text-crimson">Past speakers</div>
@@ -92,7 +101,7 @@ export default async function Home() {
             </Reveal>
             <div className="mt-9 grid gap-4 md:grid-cols-3">
               {featured.map((speaker, index) => (
-                <Reveal key={speaker.id} delay={index * 70}>
+                <Reveal key={speaker.id} delay={index * 70} variant="scale">
                   <SpeakerCard speaker={speaker} />
                 </Reveal>
               ))}
@@ -102,8 +111,8 @@ export default async function Home() {
       )}
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
-        <Reveal>
-          <div className="flex flex-col gap-8 rounded-3xl border border-line bg-paper-2 px-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-12 sm:py-12">
+        <Reveal variant="focus">
+          <div className="motion-card flex flex-col gap-8 rounded-3xl border border-line bg-paper-2 px-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-12 sm:py-12">
             <div>
               <h2 className="font-display text-4xl tracking-[-0.025em]">Ready to join?</h2>
               <p className="mt-2 text-sm text-muted">Open to every HBS student and registered partner.</p>

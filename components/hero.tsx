@@ -38,7 +38,7 @@ export function Hero() {
             preload="metadata"
             poster="/hero-poster.jpg"
             aria-hidden="true"
-            className="absolute inset-0 z-0 h-full w-full object-cover"
+            className="hero-media absolute inset-0 z-0 h-full w-full object-cover"
           >
             <source
               src="/hero-mobile.mp4"
@@ -52,7 +52,7 @@ export function Hero() {
 
         <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-start px-6 pb-24 pt-[24vh] text-center sm:pt-[23vh]">
           <h1
-            className="animate-fade-rise max-w-7xl font-display text-5xl font-normal leading-[0.95] tracking-[-2.46px] text-white sm:text-7xl md:text-8xl"
+            className="animate-fade-rise max-w-7xl font-display text-5xl leading-[0.95] tracking-[-2.46px] text-white sm:text-7xl md:text-8xl"
             style={{ textShadow }}
           >
             Where business meets artificial intelligence.

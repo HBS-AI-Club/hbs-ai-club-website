@@ -59,7 +59,7 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm transition-colors ${
+                className={`nav-link text-sm transition-colors ${
                   active ? "text-white" : "text-white/70 hover:text-white"
                 }`}
               >

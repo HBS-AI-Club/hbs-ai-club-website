@@ -2,7 +2,7 @@ import type { Speaker } from "@/lib/notion";
 
 export function SpeakerCard({ speaker }: { speaker: Speaker }) {
   return (
-    <article className="flex h-full min-h-32 items-center rounded-2xl border border-line bg-paper-2 p-6">
+    <article className="motion-card flex h-full min-h-32 items-center rounded-2xl border border-line bg-paper-2 p-6">
       <div className="flex min-w-0 items-center gap-4">
         {speaker.headshot && (
           // Notion supplies short-lived remote URLs that cannot be allowlisted safely.

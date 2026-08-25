@@ -11,8 +11,9 @@ Everything on the site is pulled live from the Notion workspace **"HBS AI Club W
 | Speakers | Speakers |
 | Leadership | Leadership (has a `Tenure` field: Current / Past board) |
 | Learn | Learning Resources + Podcasts |
+| Join | Membership Links |
 
-Edits in Notion appear on the site within ~5 minutes (incremental static regeneration).
+Edits in Notion appear on the site within about a minute (incremental static regeneration).
 
 ## Running locally
 
@@ -35,7 +36,7 @@ The site auto-deploys from `main`. The only required environment variable is `NO
 
 ## Structure
 
-- `app/` — routes (home, speakers, leadership, learn, sponsorship, join, plus speaker `[slug]` detail pages)
+- `app/` — routes (home, speakers, leadership, learn, sponsorship, and join)
 - `components/` — UI (cinematic hero, navigation, guided learning paths, and profile cards)
 - `lib/notion.ts` — the Notion data layer (database IDs live here)
 - `lib/format.ts` — shared display helpers
