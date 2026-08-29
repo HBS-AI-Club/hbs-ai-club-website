@@ -34,15 +34,15 @@ export default async function JoinPage() {
         </Reveal>
 
         {actions.length > 0 ? (
-          <ol className="grid gap-5 md:grid-cols-2">
+          <ol className="grid items-stretch gap-5 lg:grid-cols-2">
             {actions.map((action, index) => (
-              <li key={action.id}>
+              <li key={action.id} className="h-full">
                 <Reveal
                   className="h-full"
                   delay={index * 100}
                   variant={index % 2 === 0 ? "slide-left" : "slide-right"}
                 >
-                  <div className="motion-card flex min-h-64 flex-col rounded-3xl border border-line bg-paper-2 p-7 sm:p-8">
+                  <div className="motion-card flex h-full min-h-64 flex-col rounded-3xl border border-line bg-paper-2 p-7 sm:p-8">
                     <div className="eyebrow text-crimson">
                       Step {String(index + 1).padStart(2, "0")}
                     </div>

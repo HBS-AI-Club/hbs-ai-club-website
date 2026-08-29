@@ -46,7 +46,7 @@ export default async function LeadershipPage() {
               <div className="mt-8 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
                 {currentBoard.map((leader, index) => (
                   <Reveal key={leader.id} delay={(index % 4) * 70} variant="scale">
-                    <LeaderCard leader={leader} />
+                    <LeaderCard leader={leader} eager={index < 4} />
                   </Reveal>
                 ))}
               </div>

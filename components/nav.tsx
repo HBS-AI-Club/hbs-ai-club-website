@@ -35,7 +35,7 @@ export function Nav() {
     <header
       className={`${isHome ? "fixed" : "sticky"} inset-x-0 top-0 z-[90] transition-all duration-300 ${
         !isHome || scrolled || open
-          ? "border-b border-white/10 bg-[#14090d]/92 backdrop-blur-xl"
+          ? "border-b border-white/10 bg-[#14090d]/92 backdrop-blur"
           : "bg-transparent"
       }`}
     >
@@ -51,7 +51,7 @@ export function Nav() {
           HBS AI Club
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           {LINKS.map((link) => {
             const active =
               pathname === link.href || pathname.startsWith(`${link.href}/`);
@@ -76,7 +76,7 @@ export function Nav() {
         </div>
 
         <button
-          className="text-white md:hidden"
+          className="text-white lg:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-label="Toggle menu"
           aria-expanded={open}
@@ -91,7 +91,7 @@ export function Nav() {
       {open && (
         <div
           id="site-mobile-menu"
-          className="mx-auto w-full max-w-7xl px-6 pb-4 md:hidden"
+          className="mx-auto w-full max-w-7xl px-6 pb-4 lg:hidden"
         >
           <div className="liquid-glass flex flex-col gap-1 rounded-2xl p-3">
             {LINKS.map((link) => (

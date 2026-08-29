@@ -50,9 +50,9 @@ export function Hero() {
           </video>
         )}
 
-        <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-start px-6 pb-24 pt-[24vh] text-center sm:pt-[23vh]">
+        <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-start px-6 pb-24 pt-[22vh] text-center lg:pt-[24vh]">
           <h1
-            className="animate-fade-rise max-w-7xl font-display text-5xl leading-[0.95] tracking-[-2.46px] text-white sm:text-7xl md:text-8xl"
+            className="animate-fade-rise max-w-7xl font-display text-5xl leading-[0.95] tracking-[-2.46px] text-white sm:text-6xl md:text-7xl xl:text-8xl"
             style={{ textShadow }}
           >
             Where business meets artificial intelligence.

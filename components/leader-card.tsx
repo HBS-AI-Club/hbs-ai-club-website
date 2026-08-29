@@ -9,9 +9,11 @@ import {
 export function LeaderCard({
   leader,
   compact = false,
+  eager = false,
 }: {
   leader: Leader;
   compact?: boolean;
+  eager?: boolean;
 }) {
   const photo = leadershipPhoto(leader.name, leader.photo);
   const crop = leadershipPhotoCrop(leader.name);
@@ -70,7 +72,8 @@ export function LeaderCard({
               src={photo}
               alt={leader.name}
               fill
-              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+              loading={eager ? "eager" : "lazy"}
+              sizes="(min-width: 1280px) 40vw, (min-width: 640px) 100vw, 165vw"
               className="object-cover"
             />
           </div>

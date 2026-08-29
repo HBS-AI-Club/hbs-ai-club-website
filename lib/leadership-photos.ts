@@ -12,11 +12,11 @@ const PROFILE_CROPS: Record<
   { scale: number; x: number; y: number }
 > = {
   "Ashvin Nagarajan": { scale: 1, x: 0, y: 0 },
-  "Austin Wang": { scale: 2.4, x: 0, y: -16 },
-  "Cherub Kapoor": { scale: 1.45, x: 0, y: -4 },
-  "Tina Zhang": { scale: 1.15, x: 0, y: 2 },
-  "Krishna Suraj": { scale: 1.5, x: 0, y: 7 },
-  "Natalie DellaMaria": { scale: 1.2, x: 0, y: 4 },
+  "Austin Wang": { scale: 2.25, x: 0, y: -13 },
+  "Cherub Kapoor": { scale: 1.35, x: 0, y: -2 },
+  "Tina Zhang": { scale: 1, x: 0, y: 0 },
+  "Krishna Suraj": { scale: 1.1, x: 0, y: 2 },
+  "Natalie DellaMaria": { scale: 1, x: 0, y: 0 },
 };
 
 export function leadershipPhoto(name: string, cmsPhoto?: string | null) {
