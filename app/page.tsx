@@ -4,6 +4,7 @@ import { Hero } from "@/components/hero";
 import { HomepageScrollRestoration } from "@/components/homepage-scroll-restoration";
 import { Reveal } from "@/components/reveal";
 import type { RevealVariant } from "@/components/reveal";
+import { SiteChrome } from "@/components/site-chrome";
 import { SpeakerCard } from "@/components/speaker-card";
 
 export const revalidate = 60;
@@ -39,7 +40,7 @@ export default async function Home() {
   const featured = speakers.filter((speaker) => speaker.featured).slice(0, 3);
 
   return (
-    <div>
+    <SiteChrome navVariant="overlay">
       <HomepageScrollRestoration />
       <Hero />
 
@@ -128,6 +129,6 @@ export default async function Home() {
           </div>
         </Reveal>
       </section>
-    </div>
+    </SiteChrome>
   );
 }
