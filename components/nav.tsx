@@ -11,11 +11,13 @@ const LINKS = [
   { href: "/sponsorship", label: "Sponsorship" },
 ];
 
-export function Nav() {
+export type NavVariant = "overlay" | "solid";
+
+export function Nav({ variant = "solid" }: { variant?: NavVariant }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const isHome = pathname === "/";
+  const overlaysHero = variant === "overlay";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -33,8 +35,8 @@ export function Nav() {
 
   return (
     <header
-      className={`${isHome ? "fixed" : "sticky"} inset-x-0 top-0 z-[90] transition-all duration-300 ${
-        !isHome || scrolled || open
+      className={`${overlaysHero ? "fixed" : "sticky"} inset-x-0 top-0 z-[90] transition-all duration-300 ${
+        !overlaysHero || scrolled || open
           ? "border-b border-white/10 bg-[#14090d]/92 backdrop-blur"
           : "bg-transparent"
       }`}

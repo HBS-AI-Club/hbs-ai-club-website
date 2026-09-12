@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer } from "@/components/footer";
-import { Nav } from "@/components/nav";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.hbsai.club"),
@@ -43,11 +41,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Nav />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
