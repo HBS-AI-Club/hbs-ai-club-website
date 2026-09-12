@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSpeakers } from "@/lib/notion";
 import { Hero } from "@/components/hero";
+import { HomepageScrollRestoration } from "@/components/homepage-scroll-restoration";
 import { Reveal } from "@/components/reveal";
 import type { RevealVariant } from "@/components/reveal";
 import { SpeakerCard } from "@/components/speaker-card";
@@ -39,6 +40,7 @@ export default async function Home() {
 
   return (
     <div>
+      <HomepageScrollRestoration />
       <Hero />
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
