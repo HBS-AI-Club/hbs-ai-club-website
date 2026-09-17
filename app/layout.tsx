@@ -15,13 +15,20 @@ export const metadata: Metadata = {
       "The AI community at Harvard Business School.",
     siteName: "HBS AI Club",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "HBS AI Club" }],
+    images: [
+      {
+        url: "/homepage-social-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "HBS AI Club homepage",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "HBS AI Club",
     description: "The AI community at Harvard Business School.",
-    images: ["/og.png"],
+    images: ["/homepage-social-preview.png"],
   },
 };
 
